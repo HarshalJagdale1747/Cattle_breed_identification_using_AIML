@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breed Information | Cattle AI</title>
+  <meta name="description" content="Detailed information on Indian cattle breeds used in the AI-Based Cattle Breed Identification System." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Page-specific overrides ──────────────────────────────── */
+    .info-hero {
+      padding: 64px 5vw 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .info-hero .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,229,160,.12);
+      border: 1px solid rgba(0,229,160,.2);
+      border-radius: 20px; padding: 5px 14px;
+      font-size: .75rem; letter-spacing: .14em;
+      text-transform: uppercase; color: #00e5a0;
+      margin-bottom: 18px;
+    }
+    .info-hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 800; line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .info-hero h1 span {
+      background: linear-gradient(135deg,#00e5a0,#00b8ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .info-hero p { color: #7fa99a; font-size: .95rem; max-width: 620px; }
+    .divider-line {
+      width: 48px; height: 3px;
+      background: linear-gradient(135deg,#00e5a0,#00b8ff);
+      border-radius: 2px; margin: 14px 0 10px;
+    }
+
+    /* ── Project summary card ───────────────────────────────── */
+    .project-summary {
+      max-width: 1200px; margin: 0 auto 52px;
+      padding: 0 5vw;
+    }
+    .summary-card {
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.15);
+      border-radius: 14px; padding: 36px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 32px;
+    }
+    .summary-section h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .72rem; letter-spacing: .14em;
+      text-transform: uppercase; color: #00e5a0;
+      margin-bottom: 10px;
+    }
+    .summary-section p, .summary-section li {
+      font-size: .87rem; color: #7fa99a; line-height: 1.7;
+    }
+    .summary-section ul { list-style: none; padding: 0; }
+    .summary-section li::before { content: "→ "; color: #00e5a0; }
+    .stat-pill {
+      display: inline-block;
+      background: rgba(0,229,160,.1);
+      border: 1px solid rgba(0,229,160,.2);
+      border-radius: 6px; padding: 4px 10px;
+      font-size: .78rem; color: #00e5a0;
+      margin: 3px 3px 3px 0;
+    }
+
+    /* ── Filter bar ─────────────────────────────────────────── */
+    .filter-bar {
+      max-width: 1200px; margin: 0 auto 32px;
+      padding: 0 5vw;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: .75rem; letter-spacing: .1em;
+      text-transform: uppercase; color: #7fa99a;
+    }
+    .filter-btn {
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.15);
+      border-radius: 20px; padding: 6px 16px;
+      font-size: .8rem; color: #7fa99a;
+      cursor: pointer; transition: all .24s ease;
+      font-family: 'Exo 2', sans-serif;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: #00e5a0; color: #00e5a0;
+      background: rgba(0,229,160,.08);
+    }
+    .search-breeds {
+      margin-left: auto;
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.15);
+      border-radius: 20px; padding: 7px 18px;
+      color: #e8f4f0; font-family: 'Exo 2', sans-serif;
+      font-size: .85rem; outline: none;
+      transition: border-color .24s;
+      width: 220px;
+    }
+    .search-breeds:focus { border-color: #00e5a0; }
+    .search-breeds::placeholder { color: #4a7060; }
+
+    /* ── Breed Grid ──────────────────────────────────────────── */
+    .breed-grid {
+      max-width: 1200px; margin: 0 auto 80px;
+      padding: 0 5vw;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 20px;
+    }
+    .breed-card {
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.12);
+      border-radius: 14px; padding: 26px 22px;
+      cursor: pointer;
+      transition: transform .26s ease, border-color .26s ease, box-shadow .26s ease;
+      position: relative; overflow: hidden;
+      animation: fadeUp .5s ease both;
+    }
+    .breed-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg,#00e5a0,#00b8ff);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .26s ease;
+    }
+    .breed-card:hover { transform: translateY(-6px); border-color: rgba(0,229,160,.35); box-shadow: 0 8px 32px rgba(0,229,160,.18); }
+    .breed-card:hover::after { transform: scaleX(1); }
+    .breed-card.hidden { display: none; }
+
+    .breed-emoji { font-size: 2.4rem; margin-bottom: 14px; }
+    .breed-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .92rem; font-weight: 700;
+      color: #e8f4f0; margin-bottom: 6px;
+      letter-spacing: .03em;
+    }
+    .breed-location {
+      font-size: .78rem; color: #00e5a0;
+      margin-bottom: 8px;
+    }
+    .breed-type-tag {
+      display: inline-block;
+      background: rgba(0,184,255,.1);
+      border: 1px solid rgba(0,184,255,.2);
+      border-radius: 10px; padding: 3px 10px;
+      font-size: .7rem; color: #00b8ff;
+      margin-bottom: 10px;
+    }
+    .breed-blurb { font-size: .8rem; color: #7fa99a; line-height: 1.55; }
+    .card-arrow {
+      position: absolute; bottom: 20px; right: 20px;
+      font-size: 1.1rem; color: rgba(0,229,160,.4);
+      transition: color .2s, transform .2s;
+    }
+    .breed-card:hover .card-arrow { color: #00e5a0; transform: translate(2px,-2px); }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(22px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── Modal ───────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(5,13,18,.85);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+
+    .modal-box {
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.25);
+      border-radius: 18px;
+      width: 100%; max-width: 700px;
+      max-height: 88vh; overflow-y: auto;
+      transform: scale(.94) translateY(20px);
+      transition: transform .32s cubic-bezier(.34,1.56,.64,1);
+      padding: 0;
+    }
+    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+
+    .modal-header {
+      background: linear-gradient(135deg,rgba(0,229,160,.08),rgba(0,184,255,.06));
+      border-bottom: 1px solid rgba(0,229,160,.12);
+      padding: 32px 36px 24px;
+      position: relative;
+    }
+    .modal-emoji { font-size: 3rem; margin-bottom: 10px; }
+    .modal-breed-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      background: linear-gradient(135deg,#00e5a0,#00b8ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .modal-subtitle { font-size: .85rem; color: #7fa99a; margin-top: 4px; }
+    .modal-close {
+      position: absolute; top: 20px; right: 24px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 8px; width: 36px; height: 36px;
+      color: #7fa99a; font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .modal-close:hover { background: rgba(0,229,160,.1); color: #00e5a0; border-color: #00e5a0; }
+
+    .modal-body { padding: 28px 36px 36px; }
+
+    /* Stats grid inside modal */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-bottom: 28px;
+    }
+    .stat-box {
+      background: #0e2030;
+      border: 1px solid rgba(0,229,160,.1);
+      border-radius: 10px; padding: 16px 14px;
+      text-align: center;
+    }
+    .stat-box .s-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .stat-box .s-val {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .95rem; font-weight: 700; color: #00e5a0;
+      margin-bottom: 4px;
+    }
+    .stat-box .s-lbl { font-size: .7rem; color: #7fa99a; letter-spacing: .06em; text-transform: uppercase; }
+
+    /* Info sections */
+    .info-block { margin-bottom: 22px; }
+    .info-block h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .72rem; letter-spacing: .14em;
+      text-transform: uppercase; color: #00b8ff;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .info-block p { font-size: .87rem; color: #a0c8b8; line-height: 1.7; }
+    .info-block ul { list-style: none; padding: 0; }
+    .info-block li {
+      font-size: .85rem; color: #a0c8b8;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .info-block li::before { content: "▸"; color: #00e5a0; flex-shrink: 0; margin-top: 1px; }
+
+    .milk-bar-wrap { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+    .milk-bar-bg {
+      flex:1; height: 8px; background: #0e2030;
+      border-radius: 4px; overflow: hidden;
+    }
+    .milk-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg,#00e5a0,#00b8ff);
+      border-radius: 4px;
+      transition: width 1s cubic-bezier(.4,0,.2,1);
+    }
+    .milk-bar-label { font-size: .82rem; color: #00e5a0; font-family: 'Orbitron', sans-serif; min-width: 80px; text-align: right; }
+
+    /* No-results */
+    .no-results {
+      grid-column: 1/-1; text-align: center;
+      padding: 60px 20px; color: #4a7060; font-size: .95rem;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .summary-card { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .modal-body { padding: 20px 20px 28px; }
+      .modal-header { padding: 24px 20px 18px; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body data-page="information">
+
+  <!-- ── PAGE LOADER ──────────────────────────────────────────────── -->
+  <div class="site-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-core"></div>
+    <p>Scanning Breed...</p>
+  </div>
+
+  <!-- ── NAVBAR ───────────────────────────────────────────────────── -->
+  <header class="site-header">
+    <nav class="navbar container">
+      <a class="logo" href="index.html">Cattle AI</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <div class="nav-panel" id="navPanel">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="prediction.html">Prediction</a></li>
+          <li><a href="analysis.html">Analysis</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a class="active" href="information.html">Information</a></li>
+        </ul>
+        <div class="nav-actions">
+          <input type="search" class="search-input" placeholder="Search" aria-label="Search" />
+          <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── HERO ─────────────────────────────────────────────────────── -->
+  <div class="info-hero">
+    <div class="badge">📊 Dataset: atharvadarpude / indian-cattle-image-dataset</div>
+    <h1>Indian Cattle Breed <span>Encyclopedia</span></h1>
+    <div class="divider-line"></div>
+    <p>Explore detailed profiles of all cattle breeds used in our deep learning model — lifespan, weight, location, milk nutrients, and body features.</p>
+  </div>
+
+  <!-- ── PROJECT SUMMARY ──────────────────────────────────────────── -->
+  <div class="project-summary">
+    <div class="summary-card">
+
+      <div class="summary-section">
+        <h3>🎓 About the Project</h3>
+        <p>This system is a Final Year B.E. project at <strong style="color:#e8f4f0;">MIT Academy of Engineering, Alandi, Pune</strong>. It uses a Convolutional Neural Network (CNN) trained on the <em>Indian Cattle Image Dataset</em> by Atharva Darpude (Kaggle) to identify Indian cattle breeds from images, videos, or live camera input.</p>
+        <div style="margin-top:12px;">
+          <span class="stat-pill">96.4% Accuracy</span>
+          <span class="stat-pill">CNN Model</span>
+          <span class="stat-pill">Transfer Learning</span>
+          <span class="stat-pill">OpenCV</span>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <h3>📦 Dataset Details</h3>
+        <ul>
+          <li>Source: Kaggle — atharvadarpude</li>
+          <li>Dataset: Indian Cattle Image Dataset</li>
+          <li>10 major Indian cattle breeds</li>
+          <li>Thousands of annotated images</li>
+          <li>Multiple angles &amp; lighting conditions</li>
+          <li>Govt. recognized indigenous breeds</li>
+          <li>Used for: Classification &amp; Feature Extraction</li>
+        </ul>
+      </div>
+
+      <div class="summary-section">
+        <h3>⚙️ Model Pipeline</h3>
+        <ul>
+          <li>Image preprocessing via OpenCV</li>
+          <li>Data augmentation to reduce overfitting</li>
+          <li>CNN architecture (ResNet / MobileNet base)</li>
+          <li>50 training epochs, batch size 32</li>
+          <li>Softmax output layer for breed probabilities</li>
+          <li>Python · TensorFlow / Keras</li>
+          <li>Frontend: HTML, CSS, JavaScript</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FILTER BAR ────────────────────────────────────────────────── -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all">All Breeds</button>
+    <button class="filter-btn" data-filter="milch">Milch</button>
+    <button class="filter-btn" data-filter="draft">Draft</button>
+    <button class="filter-btn" data-filter="dual">Dual Purpose</button>
+    <input type="search" class="search-breeds" id="breedSearch" placeholder="🔍 Search breed name…" />
+  </div>
+
+  <!-- ── BREED GRID ────────────────────────────────────────────────── -->
+  <div class="breed-grid" id="breedGrid">
+    <!-- Cards are injected by JavaScript below -->
+  </div>
+
+  <!-- ── MODAL OVERLAY ─────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalBreedName">
+    <div class="modal-box" id="modalBox">
+      <div class="modal-header">
+        <div class="modal-emoji" id="modalEmoji"></div>
+        <div class="modal-breed-name" id="modalBreedName"></div>
+        <div class="modal-subtitle" id="modalSubtitle"></div>
+        <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────────── -->
+  <footer style="border-top:1px solid rgba(0,229,160,.1);padding:28px 5vw;text-align:center;font-size:.82rem;color:#4a7060;">
+    🐄 <strong style="color:#00e5a0;">Cattle AI</strong> &nbsp;|&nbsp;
+    MIT Academy of Engineering, Alandi — Final Year B.E. Project 2024
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+  /* ================================================================
+     INFORMATION PAGE — Breed data + interactive cards + modal
+  ================================================================ */
+
+  // ── Full breed database ──────────────────────────────────────────
+  const BREEDS = [
+    {
+      id: "gir",
+      name: "Gir",
+      emoji: "🐄",
+      location: "Gir Forest, Saurashtra, Gujarat",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "One of India's finest dairy breeds, famous for high A2 milk production and resilience in tropical climates.",
+      lifespan: "12–15 years",
+      weight: "385–550 kg (cow) · 550–800 kg (bull)",
+      height: "130–140 cm",
+      origin: "Gir Forest, Junagadh, Gujarat",
+      color: "Red / spotted white-red patches",
+      milkYield: "1200–3000 L / lactation",
+      milkFat: "4.5–5.5%",
+      milkProtein: "3.5%",
+      milkScore: 88,
+      features: [
+        "Prominent forehead dome (convex skull)",
+        "Long pendulous ears, folded like a leaf",
+        "Deep red or spotted red-white coat",
+        "Large hump over shoulders (zebu characteristic)",
+        "Long switch tail reaching to hocks",
+        "Loose pendulous dewlap",
+      ],
+      uses: "High-fat A2 milk, breed export to Brazil & Israel, sacred status in Gujarat",
+      conservation: "Thriving – exported globally; recognized by ICAR",
+    },
+    {
+      id: "sahiwal",
+      name: "Sahiwal",
+      emoji: "🐄",
+      location: "Montgomery, Punjab (undivided India)",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "Considered the best dairy breed in Asia; highly heat-tolerant with rich, creamy milk.",
+      lifespan: "12–14 years",
+      weight: "300–400 kg (cow) · 450–600 kg (bull)",
+      height: "125–135 cm",
+      origin: "Montgomery District, Punjab",
+      color: "Reddish-brown / dull red",
+      milkYield: "1400–2500 L / lactation",
+      milkFat: "4.5–5.0%",
+      milkProtein: "3.6%",
+      milkScore: 85,
+      features: [
+        "Compact, medium-sized frame",
+        "Short, thick neck with small hump",
+        "Loose, pendulous skin folds",
+        "Dull-red to brownish coat",
+        "Short, flat horns curving outward",
+        "Well-developed udder with good milk veins",
+      ],
+      uses: "Primarily dairy; crossbreeding in Africa and Australia",
+      conservation: "Well-preserved; cross-bred globally for tropical dairying",
+    },
+    {
+      id: "red_sindhi",
+      name: "Red Sindhi",
+      emoji: "🐄",
+      location: "Karachi & Hyderabad, Sindh (Pakistan / undivided India)",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "Heat-tolerant red dairy breed, popular across tropical Asia and Latin America.",
+      lifespan: "12–15 years",
+      weight: "280–340 kg (cow) · 420–540 kg (bull)",
+      height: "120–130 cm",
+      origin: "Sindh province",
+      color: "Deep red / dark reddish-brown",
+      milkYield: "1100–2100 L / lactation",
+      milkFat: "4.5–5.5%",
+      milkProtein: "3.4%",
+      milkScore: 80,
+      features: [
+        "Medium, compact body with deep red coat",
+        "Medium-sized curved horns",
+        "Moderately developed dewlap",
+        "Moderate hump over the withers",
+        "Good tick resistance due to dense skin",
+        "Fine skin with short, smooth hair",
+      ],
+      uses: "Dairy; crossbreeding programs in tropical countries",
+      conservation: "Stable; government breeding centres maintain purity",
+    },
+    {
+      id: "hariana",
+      name: "Hariana",
+      emoji: "🐄",
+      location: "Haryana, western Uttar Pradesh, Rajasthan",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Slim, elegant white cattle of north India — efficient draft workers and moderate milk producers.",
+      lifespan: "14–18 years",
+      weight: "280–370 kg (cow) · 430–580 kg (bull)",
+      height: "130–145 cm",
+      origin: "Rohtak, Hisar, Gurgaon districts, Haryana",
+      color: "White / light grey",
+      milkYield: "900–1600 L / lactation",
+      milkFat: "4.0–4.5%",
+      milkProtein: "3.3%",
+      milkScore: 60,
+      features: [
+        "Tall, lean, angular body frame",
+        "Long, narrow white face",
+        "Short, sharp, outward-turning horns",
+        "Small to medium straight hump",
+        "Thin skin, short glossy white coat",
+        "Powerful hindquarters for draft work",
+      ],
+      uses: "Ploughing, transport, moderate dairy",
+      conservation: "Stable; valued by farmers across Haryana",
+    },
+    {
+      id: "ongole",
+      name: "Ongole",
+      emoji: "🐄",
+      location: "Prakasam & Guntur districts, Andhra Pradesh",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Majestic, large white breed of south India, prized for draft strength and exported to Brazil as 'Nelore'.",
+      lifespan: "15–20 years",
+      weight: "350–450 kg (cow) · 550–900 kg (bull)",
+      height: "140–160 cm",
+      origin: "Ongole (Prakasam), Andhra Pradesh",
+      color: "White / grey-white",
+      milkYield: "600–1200 L / lactation",
+      milkFat: "4.0–4.8%",
+      milkProtein: "3.2%",
+      milkScore: 48,
+      features: [
+        "Very large, heavy muscular body",
+        "Massive, prominent hump (largest among Indian breeds)",
+        "Broad, flat forehead; large ears",
+        "Long, drooping dewlap",
+        "Dark grey skin around eyes and muzzle",
+        "Short, thick, curved horns pointing outward",
+      ],
+      uses: "Heavy draft, beef (exported as Nelore to Brazil)",
+      conservation: "Critically endangered in native tract; thriving as Nelore globally",
+    },
+    {
+      id: "kankrej",
+      name: "Kankrej",
+      emoji: "🐄",
+      location: "Rann of Kutch, North Gujarat & Rajasthan",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Swift, powerful draft cattle with a silver-grey coat and distinctive lyre-shaped horns.",
+      lifespan: "14–18 years",
+      weight: "320–420 kg (cow) · 500–700 kg (bull)",
+      height: "135–148 cm",
+      origin: "Kankrej region, Banaskantha, Gujarat",
+      color: "Silver-grey / iron-grey / steel blue",
+      milkYield: "900–1500 L / lactation",
+      milkFat: "3.8–4.5%",
+      milkProtein: "3.3%",
+      milkScore: 58,
+      features: [
+        "Muscular body with broad back",
+        "Distinctive lyre-shaped horns turning outward and backward",
+        "Short, thick neck with medium hump",
+        "Steel-grey to iron coat",
+        "Broad forehead, large eyes",
+        "Quick-stepping, energetic gait",
+      ],
+      uses: "Heavy draft, light dairy; known for extraordinary walking endurance",
+      conservation: "Well maintained; exported to Brazil as 'Guzerat'",
+    },
+    {
+      id: "tharparkar",
+      name: "Tharparkar",
+      emoji: "🐄",
+      location: "Thar Desert, Barmer, Rajasthan",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Desert-hardy white cattle renowned for surviving harsh arid conditions while maintaining good milk yields.",
+      lifespan: "14–18 years",
+      weight: "290–370 kg (cow) · 440–570 kg (bull)",
+      height: "128–140 cm",
+      origin: "Tharparkar district, Rajasthan (border of India-Pakistan)",
+      color: "White / grey-white",
+      milkYield: "1000–2200 L / lactation",
+      milkFat: "4.4–5.2%",
+      milkProtein: "3.5%",
+      milkScore: 72,
+      features: [
+        "Medium-sized, well-proportioned frame",
+        "Short, curved horns pointing upward",
+        "Thick, rough skin adapted to desert heat",
+        "Small, firm hump",
+        "Large, clear eyes with good desert vision",
+        "Long, deep barrel for water storage",
+      ],
+      uses: "Desert dairy and draft; community livelihood in Thar region",
+      conservation: "Endangered; active conservation by NRCE Bikaner",
+    },
+    {
+      id: "deoni",
+      name: "Deoni",
+      emoji: "🐄",
+      location: "Latur, Osmanabad, Bidar — Maharashtra & Karnataka",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Bold black-and-white spotted breed of the Deccan plateau, reliable for both dairy and fieldwork.",
+      lifespan: "12–16 years",
+      weight: "290–370 kg (cow) · 440–580 kg (bull)",
+      height: "128–138 cm",
+      origin: "Deccan Plateau, Latur, Maharashtra",
+      color: "Black & white patches (piebald)",
+      milkYield: "850–1600 L / lactation",
+      milkFat: "3.9–4.8%",
+      milkProtein: "3.3%",
+      milkScore: 56,
+      features: [
+        "Distinctive black-and-white piebald coat",
+        "Medium, compact muscular body",
+        "Short, thick horns curving outward",
+        "Moderate hump; straight topline",
+        "Pink muzzle and udder skin",
+        "Well-developed milk veins in lactating cows",
+      ],
+      uses: "Dual purpose — light ploughing and dairy",
+      conservation: "Moderate numbers; state government breed development programs",
+    },
+    {
+      id: "kangayam",
+      name: "Kangayam",
+      emoji: "🐄",
+      location: "Erode & Tiruppur districts, Tamil Nadu",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Strong, grey draft cattle from Tamil Nadu famous for agility on hilly terrain and endurance ploughing.",
+      lifespan: "15–20 years",
+      weight: "260–360 kg (cow) · 400–560 kg (bull)",
+      height: "120–135 cm",
+      origin: "Kangayam, Erode, Tamil Nadu",
+      color: "Grey / dark grey",
+      milkYield: "500–900 L / lactation",
+      milkFat: "4.2–5.0%",
+      milkProtein: "3.2%",
+      milkScore: 35,
+      features: [
+        "Compact, deep-chested frame",
+        "Short, thick horns curving upward then inward",
+        "Dark grey coat; black muzzle and hooves",
+        "Straight back, well-arched ribs",
+        "Hard, black hooves suited to rocky terrain",
+        "Energetic, alert temperament",
+      ],
+      uses: "Primarily draft and field ploughing; light dairy as secondary use",
+      conservation: "Endangered; protected by Kandaswami Kandar College farm, Erode",
+    },
+    {
+      id: "rathi",
+      name: "Rathi",
+      emoji: "🐄",
+      location: "Bikaner, Ganganagar, Hanumangarh — Rajasthan",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "The 'camel of cattle' — a highly productive dairy breed adapted to the harsh Thar desert environment.",
+      lifespan: "13–16 years",
+      weight: "280–360 kg (cow) · 420–560 kg (bull)",
+      height: "126–136 cm",
+      origin: "Bikaner region, Rajasthan",
+      color: "Brown with white patches / reddish-brown",
+      milkYield: "1200–2500 L / lactation",
+      milkFat: "4.8–5.4%",
+      milkProtein: "3.6%",
+      milkScore: 78,
+      features: [
+        "Medium-sized body with round barrel",
+        "Brown coat with irregular white spots",
+        "Short, slightly curved horns",
+        "Moderate hump; clean legs",
+        "Well-attached, symmetrical udder",
+        "Efficient feed conversion in sparse vegetation",
+      ],
+      uses: "High-yielding desert dairy; livelihood of Raikas (pastoral community)",
+      conservation: "Stable; National Bureau of Animal Genetic Resources (NBAGR) registered",
+    },
+  ];
+
+  // ── Render breed cards ──────────────────────────────────────────
+  function renderCards(list) {
+    const grid = document.getElementById('breedGrid');
+    grid.innerHTML = '';
+
+    if (list.length === 0) {
+      grid.innerHTML = '<div class="no-results">🔍 No breeds found. Try a different search.</div>';
+      return;
+    }
+
+    list.forEach((b, i) => {
+      const card = document.createElement('div');
+      card.className = 'breed-card';
+      card.dataset.type = b.type;
+      card.style.animationDelay = (i * 0.05) + 's';
+      card.innerHTML = `
+        <div class="breed-emoji">${b.emoji}</div>
+        <div class="breed-name">${b.name}</div>
+        <div class="breed-location">📍 ${b.location.split(',').slice(-1)[0].trim()}</div>
+        <div class="breed-type-tag">${b.typeLabel}</div>
+        <div class="breed-blurb">${b.blurb}</div>
+        <div class="card-arrow">↗</div>
+      `;
+      card.addEventListener('click', () => openModal(b));
+      grid.appendChild(card);
+    });
+  }
+
+  // ── Open modal with breed data ──────────────────────────────────
+  function openModal(b) {
+    document.getElementById('modalEmoji').textContent = b.emoji;
+    document.getElementById('modalBreedName').textContent = b.name;
+    document.getElementById('modalSubtitle').textContent = b.location + ' · ' + b.typeLabel;
+
+    document.getElementById('modalBody').innerHTML = `
+      <!-- Quick stats -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="s-icon">⏳</div>
+          <div class="s-val">${b.lifespan}</div>
+          <div class="s-lbl">Avg Lifespan</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">⚖️</div>
+          <div class="s-val">${b.weight.split('·')[0].trim()}</div>
+          <div class="s-lbl">Cow Weight</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">📏</div>
+          <div class="s-val">${b.height}</div>
+          <div class="s-lbl">Height at Withers</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">📍</div>
+          <div class="s-val" style="font-size:.78rem;">${b.origin.split(',')[0]}</div>
+          <div class="s-lbl">Origin</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">🎨</div>
+          <div class="s-val" style="font-size:.78rem;">${b.color}</div>
+          <div class="s-lbl">Coat Color</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">🥛</div>
+          <div class="s-val" style="font-size:.8rem;">${b.milkYield}</div>
+          <div class="s-lbl">Milk / Lactation</div>
+        </div>
+      </div>
+
+      <!-- Milk nutrients -->
+      <div class="info-block">
+        <h4>🥛 Milk Nutritional Profile</h4>
+        <p style="margin-bottom:12px;">Fat content: <strong style="color:#00e5a0;">${b.milkFat}</strong> &nbsp;|&nbsp; Protein: <strong style="color:#00e5a0;">${b.milkProtein}</strong> &nbsp;|&nbsp; Type: <strong style="color:#00e5a0;">A2 Beta-Casein milk</strong></p>
+        <div class="milk-bar-wrap">
+          <span style="font-size:.78rem;color:#7fa99a;min-width:80px;">Yield Score</span>
+          <div class="milk-bar-bg">
+            <div class="milk-bar-fill" id="milkBar" style="width:0%"></div>
+          </div>
+          <span class="milk-bar-label">${b.milkScore}/100</span>
+        </div>
+      </div>
+
+      <!-- Body features -->
+      <div class="info-block">
+        <h4>🐄 Distinctive Body Features</h4>
+        <ul>
+          ${b.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+      </div>
+
+      <!-- Uses & conservation -->
+      <div class="info-block">
+        <h4>🌾 Primary Uses</h4>
+        <p>${b.uses}</p>
+      </div>
+      <div class="info-block">
+        <h4>🛡️ Conservation Status</h4>
+        <p>${b.conservation}</p>
+      </div>
+    `;
+
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Animate milk bar after modal opens
+    setTimeout(() => {
+      const bar = document.getElementById('milkBar');
+      if (bar) bar.style.width = b.milkScore + '%';
+    }, 350);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on overlay click or button
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // ── Filter + Search ─────────────────────────────────────────────
+  let activeFilter = 'all';
+  let searchTerm   = '';
+
+  function applyFilters() {
+    const filtered = BREEDS.filter(b => {
+      const matchType   = activeFilter === 'all' || b.type === activeFilter;
+      const matchSearch = b.name.toLowerCase().includes(searchTerm) ||
+                          b.location.toLowerCase().includes(searchTerm) ||
+                          b.blurb.toLowerCase().includes(searchTerm);
+      return matchType && matchSearch;
+    });
+    renderCards(filtered);
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  document.getElementById('breedSearch').addEventListener('input', (e) => {
+    searchTerm = e.target.value.toLowerCase().trim();
+    applyFilters();
+  });
+
+  // ── Initial render ───────────────────────────────────────────────
+  renderCards(BREEDS);
+  </script>
+</body>
+</html>

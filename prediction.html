@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prediction | Cattle AI</title>
+    <meta name="description" content="Choose image, video, or camera-based cattle breed prediction." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="prediction">
+    <div class="site-loader" id="pageLoader" aria-hidden="true">
+      <div class="loader-core"></div>
+      <p>Scanning Breed...</p>
+    </div>
+
+    <header class="site-header">
+      <nav class="navbar container">
+        <a class="logo" href="index.html">Cattle AI</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+        <div class="nav-panel" id="navPanel">
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a class="active" href="prediction.html">Prediction</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a class="active" href="information.html">Information</a></li>
+          </ul>
+          <div class="nav-actions">
+            <input type="search" class="search-input" placeholder="Search prediction" aria-label="Search" />
+            <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell container">
+      <div class="section-heading page-header">
+        <span class="section-tag">Prediction Modes</span>
+        <h1>Select your input source</h1>
+      </div>
+
+      <section class="prediction-grid horizontal-grid">
+        <a class="action-card glass-panel" href="image-prediction.html">
+          <h2>Upload Image</h2>
+          <p>Select a cattle image from your device and preview it before running prediction.</p>
+          <span class="secondary-button">Go to Image Prediction</span>
+        </a>
+
+        <a class="action-card glass-panel" href="video-prediction.html">
+          <h2>Upload Video</h2>
+          <p>Upload a cattle video, preview the clip and extract a frame for breed analysis.</p>
+          <span class="secondary-button">Go to Video Prediction</span>
+        </a>
+
+        <a class="action-card glass-panel" href="camera-capture.html">
+          <h2>Capture Image</h2>
+          <p>Use the live camera feed to capture a clear image and perform quick prediction.</p>
+          <span class="secondary-button">Go to Camera Prediction</span>
+        </a>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

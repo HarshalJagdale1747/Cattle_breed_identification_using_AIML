@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analysis | Cattle AI</title>
+    <meta name="description" content="Project analysis graphs for cattle breed identification model performance." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="analysis">
+    <div class="site-loader" id="pageLoader" aria-hidden="true">
+      <div class="loader-core"></div>
+      <p>Scanning Breed...</p>
+    </div>
+
+    <header class="site-header">
+      <nav class="navbar container">
+        <a class="logo" href="index.html">Cattle AI</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+        <div class="nav-panel" id="navPanel">
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="prediction.html">Prediction</a></li>
+            <li><a class="active" href="analysis.html">Analysis</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a class="active" href="information.html">Information</a></li>
+          </ul>
+          <div class="nav-actions">
+            <input type="search" class="search-input" placeholder="Search analysis" aria-label="Search" />
+            <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell container">
+      <div class="section-heading page-header">
+        <span class="section-tag">Model Analysis</span>
+        <h1>Performance graph placeholders</h1>
+      </div>
+
+      <section class="graph-grid">
+        <article class="graph-card glass-panel">
+          <h2>Accuracy Graph</h2>
+          <div class="graph-placeholder bars accuracy-bars">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <p>The accuracy graph represents how correctly the model identifies cattle breeds across training cycles.</p>
+        </article>
+
+        <article class="graph-card glass-panel">
+          <h2>Loss Graph</h2>
+          <div class="graph-placeholder line-chart">
+            <div class="line-wave"></div>
+          </div>
+          <p>The loss graph indicates the reduction in model error as the deep learning network improves.</p>
+        </article>
+
+        <article class="graph-card glass-panel">
+          <h2>Precision Graph</h2>
+          <div class="graph-placeholder circular-chart">
+            <div class="chart-ring">92%</div>
+          </div>
+          <p>Precision highlights how many predicted cattle breed labels were correct out of all positive predictions.</p>
+        </article>
+
+        <article class="graph-card glass-panel">
+          <h2>Recall Graph</h2>
+          <div class="graph-placeholder bars recall-bars">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <p>Recall shows how effectively the model detects all relevant cattle breed samples in the dataset.</p>
+        </article>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Prediction | Cattle AI</title>
+    <meta name="description" content="Upload an image for cattle breed prediction." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="image">
+    <div class="site-loader" id="pageLoader" aria-hidden="true">
+      <div class="loader-core"></div>
+      <p>Scanning Breed...</p>
+    </div>
+
+    <header class="site-header">
+      <nav class="navbar container">
+        <a class="logo" href="index.html">Cattle AI</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+        <div class="nav-panel" id="navPanel">
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a class="active" href="prediction.html">Prediction</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a class="active" href="information.html">Information</a></li>
+          </ul>
+          <div class="nav-actions">
+            <input type="search" class="search-input" placeholder="Search image tools" aria-label="Search" />
+            <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell container">
+      <div class="section-heading page-header">
+        <span class="section-tag">Image Prediction</span>
+        <h1>Analyze a cattle image</h1>
+      </div>
+
+      <section class="tool-layout glass-panel">
+        <div class="tool-actions">
+          <label class="primary-button file-label">
+            Upload Image
+            <input type="file" id="imageUpload" accept="image/*" hidden />
+          </label>
+          <button class="secondary-button button-element" id="predictImageBtn" type="button">Predict</button>
+          <button class="ghost-button button-element" id="resetImageBtn" type="button">Reset</button>
+        </div>
+
+        <div class="preview-box" id="imagePreviewBox">
+          <img id="imagePreview" alt="Selected cattle preview" />
+          <p class="placeholder-text" id="imagePlaceholder">Image preview will appear here.</p>
+        </div>
+      </section>
+
+      <section class="result-card glass-panel" id="imageResult">
+        <h2>Breed Name</h2>
+        <p class="result-breed" id="imageBreed">-</p>
+        <p class="result-accuracy">Accuracy: <span id="imageAccuracy">-</span></p>
+        <p class="result-note">This prediction is generated using deep learning model</p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI-Based Cattle Breed Identification System</title>
+    <meta
+      name="description"
+      content="AI-Based Cattle Breed Identification System with image, video, and camera-based breed prediction, analysis, and contact pages."
+    />
+    <meta name="author" content="MIT AOE Students" />
+    <meta property="og:title" content="AI-Based Cattle Breed Identification System" />
+    <meta
+      property="og:description"
+      content="A responsive engineering project website for cattle breed identification using deep learning."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="/" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="home">
+    <div class="site-loader" id="pageLoader" aria-hidden="true">
+      <div class="loader-core"></div>
+      <p>Scanning Breed...</p>
+    </div>
+
+    <header class="site-header">
+      <nav class="navbar container">
+        <a class="logo" href="index.html">Cattle AI</a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+
+        <div class="nav-panel" id="navPanel">
+          <ul class="nav-links">
+            <li><a class="active" href="index.html">Home</a></li>
+            <li><a href="prediction.html">Prediction</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a class="active" href="information.html">Information</a></li>
+          </ul>
+
+          <div class="nav-actions">
+            <input type="search" class="search-input" placeholder="Search section" aria-label="Search" />
+            <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow">Final Year Engineering Project</span>
+            <h1>AI-Based Cattle Breed Identification</h1>
+            <p class="hero-text">Upload image, video or use camera</p>
+            <a class="primary-button" href="prediction.html">Start Prediction</a>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-card glass-panel">
+              <span class="status-pill">Model Ready</span>
+              <h2>Deep Learning Assisted Breed Detection</h2>
+              <div class="hero-stats">
+                <article>
+                  <strong>Image</strong>
+                  <span>Preview + prediction flow</span>
+                </article>
+                <article>
+                  <strong>Video</strong>
+                  <span>Frame extraction support</span>
+                </article>
+                <article>
+                  <strong>Camera</strong>
+                  <span>Live capture workflow</span>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-section container" id="about">
+        <div class="section-heading">
+          <span class="section-tag">About Project</span>
+          <h2>Built for practical cattle breed identification</h2>
+        </div>
+        <p class="section-copy">
+          This system uses deep learning to identify cattle breeds using images.
+        </p>
+      </section>
+
+      <section class="features-section container" id="features">
+        <div class="section-heading">
+          <span class="section-tag">Core Features</span>
+          <h2>Simple, responsive and professional workflow</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card glass-panel">
+            <h3>Breed Detection</h3>
+            <p>AI based identification flow for cattle breed prediction using uploaded media.</p>
+          </article>
+          <article class="feature-card glass-panel">
+            <h3>Real-Time Camera Capture</h3>
+            <p>Use the device camera to capture a live image and perform instant prediction.</p>
+          </article>
+          <article class="feature-card glass-panel">
+            <h3>High Accuracy Prediction</h3>
+            <p>Display breed result and confidence score in a clear, easy-to-read format.</p>
+          </article>
+          <article class="feature-card glass-panel">
+            <h3>Easy to Use Interface</h3>
+            <p>Beginner-friendly layout with separate pages for analysis, prediction and contact.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-layout">
+        <p>This website is designed by students of MIT AOE, Alandi as part of final year project.</p>
+        <a href="contact.html" class="footer-link">Project Contact</a>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
