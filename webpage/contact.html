@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Cattle AI</title>
+    <meta name="description" content="Contact page for the AI-Based Cattle Breed Identification System project." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="contact">
+    <div class="site-loader" id="pageLoader" aria-hidden="true">
+      <div class="loader-core"></div>
+      <p>Scanning Breed...</p>
+    </div>
+
+    <header class="site-header">
+      <nav class="navbar container">
+        <a class="logo" href="index.html">Cattle AI</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+        <div class="nav-panel" id="navPanel">
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="prediction.html">Prediction</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a class="active" href="contact.html">Contact</a></li>
+            <li><a class="active" href="information.html">Information</a></li>
+          </ul>
+          <div class="nav-actions">
+            <input type="search" class="search-input" placeholder="Search contact" aria-label="Search" />
+            <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell container contact-layout">
+      <section class="contact-form-panel glass-panel">
+        <div class="section-heading page-header">
+          <span class="section-tag">Contact</span>
+          <h1>Get in touch with the project team</h1>
+        </div>
+
+        <form id="contactForm" class="contact-form">
+          <label>
+            Name
+            <input type="text" id="name" placeholder="Enter your name" required />
+          </label>
+
+          <label>
+            Email
+            <input type="email" id="email" placeholder="Enter your email" required />
+          </label>
+
+          <label>
+            Message
+            <textarea id="message" rows="5" placeholder="Write your message" required></textarea>
+          </label>
+
+          <button class="primary-button button-element" type="submit">Submit</button>
+          <p class="form-status" id="formStatus"></p>
+        </form>
+      </section>
+
+      <aside class="contact-info-panel glass-panel">
+        <h2>College Name</h2>
+        <p>MIT Academy of Engineering, Alandi</p>
+        <h3>Project Team Info</h3>
+        <p>Final year engineering students working on AI-assisted cattle breed identification using deep learning.</p>
+      </aside>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

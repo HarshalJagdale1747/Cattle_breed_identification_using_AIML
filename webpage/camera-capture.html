@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Camera Capture | Cattle AI</title>
+    <meta name="description" content="Capture an image using camera for cattle breed prediction." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="camera">
+    <div class="site-loader" id="pageLoader" aria-hidden="true">
+      <div class="loader-core"></div>
+      <p>Scanning Breed...</p>
+    </div>
+
+    <header class="site-header">
+      <nav class="navbar container">
+        <a class="logo" href="index.html">Cattle AI</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+        <div class="nav-panel" id="navPanel">
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a class="active" href="prediction.html">Prediction</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a class="active" href="information.html">Information</a></li>
+          </ul>
+          <div class="nav-actions">
+            <input type="search" class="search-input" placeholder="Search camera tools" aria-label="Search" />
+            <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-shell container">
+      <div class="section-heading page-header">
+        <span class="section-tag">Camera Capture</span>
+        <h1>Capture live cattle image</h1>
+      </div>
+
+      <section class="tool-layout glass-panel">
+        <div class="tool-actions">
+          <button class="primary-button button-element" id="startCameraBtn" type="button">Start Camera</button>
+          <button class="secondary-button button-element" id="captureBtn" type="button">Capture</button>
+          <button class="secondary-button button-element" id="predictCaptureBtn" type="button">Predict</button>
+        </div>
+
+        <div class="media-grid">
+          <div class="preview-box camera-box">
+            <video id="cameraFeed" autoplay playsinline muted></video>
+            <p class="placeholder-text" id="cameraPlaceholder">Live camera feed will appear here.</p>
+          </div>
+          <div class="preview-box">
+            <canvas id="captureCanvas"></canvas>
+            <p class="placeholder-text" id="capturePlaceholder">Captured image will appear here.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="result-card glass-panel" id="cameraResult">
+        <h2>Prediction Result</h2>
+        <p class="result-breed" id="cameraBreed">-</p>
+        <p class="result-accuracy">Accuracy: <span id="cameraAccuracy">-</span></p>
+        <p class="result-note">This prediction is generated using deep learning model</p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
