@@ -1,65 +1,2011 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prediction | Cattle AI</title>
-    <meta name="description" content="Choose image, video, or camera-based cattle breed prediction." />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body data-page="prediction">
-    <div class="site-loader" id="pageLoader" aria-hidden="true">
-      <div class="loader-core"></div>
-      <p>Scanning Breed...</p>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breed Information | Cattle AI</title>
+  <meta name="description" content="Detailed information on Indian cattle breeds used in the AI-Based Cattle Breed Identification System." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Page-specific overrides ──────────────────────────────── */
+    .info-hero {
+      padding: 64px 5vw 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .info-hero .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,229,160,.12);
+      border: 1px solid rgba(0,229,160,.2);
+      border-radius: 20px; padding: 5px 14px;
+      font-size: .75rem; letter-spacing: .14em;
+      text-transform: uppercase; color: #00e5a0;
+      margin-bottom: 18px;
+    }
+    .info-hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 800; line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .info-hero h1 span {
+      background: linear-gradient(135deg,#00e5a0,#00b8ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .info-hero p { color: #7fa99a; font-size: .95rem; max-width: 620px; }
+    .divider-line {
+      width: 48px; height: 3px;
+      background: linear-gradient(135deg,#00e5a0,#00b8ff);
+      border-radius: 2px; margin: 14px 0 10px;
+    }
 
-    <header class="site-header">
-      <nav class="navbar container">
-        <a class="logo" href="index.html">Cattle AI</a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
-        <div class="nav-panel" id="navPanel">
-          <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a class="active" href="prediction.html">Prediction</a></li>
-            <li><a href="analysis.html">Analysis</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a class="active" href="information.html">Information</a></li>
-          </ul>
-          <div class="nav-actions">
-            <input type="search" class="search-input" placeholder="Search prediction" aria-label="Search" />
-            <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
-          </div>
+    /* ── Project summary card ───────────────────────────────── */
+    .project-summary {
+      max-width: 1200px; margin: 0 auto 52px;
+      padding: 0 5vw;
+    }
+    .summary-card {
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.15);
+      border-radius: 14px; padding: 36px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 32px;
+    }
+    .summary-section h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .72rem; letter-spacing: .14em;
+      text-transform: uppercase; color: #00e5a0;
+      margin-bottom: 10px;
+    }
+    .summary-section p, .summary-section li {
+      font-size: .87rem; color: #7fa99a; line-height: 1.7;
+    }
+    .summary-section ul { list-style: none; padding: 0; }
+    .summary-section li::before { content: "→ "; color: #00e5a0; }
+    .stat-pill {
+      display: inline-block;
+      background: rgba(0,229,160,.1);
+      border: 1px solid rgba(0,229,160,.2);
+      border-radius: 6px; padding: 4px 10px;
+      font-size: .78rem; color: #00e5a0;
+      margin: 3px 3px 3px 0;
+    }
+
+    /* ── Filter bar ─────────────────────────────────────────── */
+    .filter-bar {
+      max-width: 1200px; margin: 0 auto 32px;
+      padding: 0 5vw;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: .75rem; letter-spacing: .1em;
+      text-transform: uppercase; color: #7fa99a;
+    }
+    .filter-btn {
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.15);
+      border-radius: 20px; padding: 6px 16px;
+      font-size: .8rem; color: #7fa99a;
+      cursor: pointer; transition: all .24s ease;
+      font-family: 'Exo 2', sans-serif;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: #00e5a0; color: #00e5a0;
+      background: rgba(0,229,160,.08);
+    }
+    .search-breeds {
+      margin-left: auto;
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.15);
+      border-radius: 20px; padding: 7px 18px;
+      color: #e8f4f0; font-family: 'Exo 2', sans-serif;
+      font-size: .85rem; outline: none;
+      transition: border-color .24s;
+      width: 220px;
+    }
+    .search-breeds:focus { border-color: #00e5a0; }
+    .search-breeds::placeholder { color: #4a7060; }
+
+    /* ── Breed Grid ──────────────────────────────────────────── */
+    .breed-grid {
+      max-width: 1200px; margin: 0 auto 80px;
+      padding: 0 5vw;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 20px;
+    }
+    .breed-card {
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.12);
+      border-radius: 14px; padding: 26px 22px;
+      cursor: pointer;
+      transition: transform .26s ease, border-color .26s ease, box-shadow .26s ease;
+      position: relative; overflow: hidden;
+      animation: fadeUp .5s ease both;
+    }
+    .breed-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg,#00e5a0,#00b8ff);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .26s ease;
+    }
+    .breed-card:hover { transform: translateY(-6px); border-color: rgba(0,229,160,.35); box-shadow: 0 8px 32px rgba(0,229,160,.18); }
+    .breed-card:hover::after { transform: scaleX(1); }
+    .breed-card.hidden { display: none; }
+
+    .breed-emoji { font-size: 2.4rem; margin-bottom: 14px; }
+    .breed-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .92rem; font-weight: 700;
+      color: #e8f4f0; margin-bottom: 6px;
+      letter-spacing: .03em;
+    }
+    .breed-location {
+      font-size: .78rem; color: #00e5a0;
+      margin-bottom: 8px;
+    }
+    .breed-type-tag {
+      display: inline-block;
+      background: rgba(0,184,255,.1);
+      border: 1px solid rgba(0,184,255,.2);
+      border-radius: 10px; padding: 3px 10px;
+      font-size: .7rem; color: #00b8ff;
+      margin-bottom: 10px;
+    }
+    .breed-blurb { font-size: .8rem; color: #7fa99a; line-height: 1.55; }
+    .card-arrow {
+      position: absolute; bottom: 20px; right: 20px;
+      font-size: 1.1rem; color: rgba(0,229,160,.4);
+      transition: color .2s, transform .2s;
+    }
+    .breed-card:hover .card-arrow { color: #00e5a0; transform: translate(2px,-2px); }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(22px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── Modal ───────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(5,13,18,.85);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+
+    .modal-box {
+      background: #0b1a22;
+      border: 1px solid rgba(0,229,160,.25);
+      border-radius: 18px;
+      width: 100%; max-width: 700px;
+      max-height: 88vh; overflow-y: auto;
+      transform: scale(.94) translateY(20px);
+      transition: transform .32s cubic-bezier(.34,1.56,.64,1);
+      padding: 0;
+    }
+    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+
+    .modal-header {
+      background: linear-gradient(135deg,rgba(0,229,160,.08),rgba(0,184,255,.06));
+      border-bottom: 1px solid rgba(0,229,160,.12);
+      padding: 32px 36px 24px;
+      position: relative;
+    }
+    .modal-emoji { font-size: 3rem; margin-bottom: 10px; }
+    .modal-breed-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      background: linear-gradient(135deg,#00e5a0,#00b8ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .modal-subtitle { font-size: .85rem; color: #7fa99a; margin-top: 4px; }
+    .modal-close {
+      position: absolute; top: 20px; right: 24px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 8px; width: 36px; height: 36px;
+      color: #7fa99a; font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .modal-close:hover { background: rgba(0,229,160,.1); color: #00e5a0; border-color: #00e5a0; }
+
+    .modal-body { padding: 28px 36px 36px; }
+
+    /* Stats grid inside modal */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-bottom: 28px;
+    }
+    .stat-box {
+      background: #0e2030;
+      border: 1px solid rgba(0,229,160,.1);
+      border-radius: 10px; padding: 16px 14px;
+      text-align: center;
+    }
+    .stat-box .s-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .stat-box .s-val {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .95rem; font-weight: 700; color: #00e5a0;
+      margin-bottom: 4px;
+    }
+    .stat-box .s-lbl { font-size: .7rem; color: #7fa99a; letter-spacing: .06em; text-transform: uppercase; }
+
+    /* Info sections */
+    .info-block { margin-bottom: 22px; }
+    .info-block h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .72rem; letter-spacing: .14em;
+      text-transform: uppercase; color: #00b8ff;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .info-block p { font-size: .87rem; color: #a0c8b8; line-height: 1.7; }
+    .info-block ul { list-style: none; padding: 0; }
+    .info-block li {
+      font-size: .85rem; color: #a0c8b8;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .info-block li::before { content: "▸"; color: #00e5a0; flex-shrink: 0; margin-top: 1px; }
+
+    .milk-bar-wrap { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+    .milk-bar-bg {
+      flex:1; height: 8px; background: #0e2030;
+      border-radius: 4px; overflow: hidden;
+    }
+    .milk-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg,#00e5a0,#00b8ff);
+      border-radius: 4px;
+      transition: width 1s cubic-bezier(.4,0,.2,1);
+    }
+    .milk-bar-label { font-size: .82rem; color: #00e5a0; font-family: 'Orbitron', sans-serif; min-width: 80px; text-align: right; }
+
+    /* No-results */
+    .no-results {
+      grid-column: 1/-1; text-align: center;
+      padding: 60px 20px; color: #4a7060; font-size: .95rem;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .summary-card { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .modal-body { padding: 20px 20px 28px; }
+      .modal-header { padding: 24px 20px 18px; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body data-page="information">
+
+  <!-- ── PAGE LOADER ──────────────────────────────────────────────── -->
+  <div class="site-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-core"></div>
+    <p>Scanning Breed...</p>
+  </div>
+
+  <!-- ── NAVBAR ───────────────────────────────────────────────────── -->
+  <header class="site-header">
+
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,mr,gu,kn,ta,te,bn',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            },
+            'google_translate_element'
+        );
+    }
+</script>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,mr,gu,kn,ta,te,bn',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            },
+            'google_translate_element'
+        );
+    }
+</script>
+
+<script
+    type="text/javascript"
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+
+    <nav class="navbar container">
+      <a class="logo" href="index.html">Cattle AI</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <div class="nav-panel" id="navPanel">
+        <ul class="nav-links">
+          <li><a class="active" href="/">Home</a></li>
+          <li><a href="prediction.html">Prediction</a></li>
+          <li><a href="analysis.html">Analysis</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a class="active" href="information.html">Information</a></li>
+          <div id="google_translate_element"></div>
+        </ul>
+        <div class="nav-actions">
+          <input type="search" class="search-input" placeholder="Search" aria-label="Search" />
+          <button class="back-button" type="button" onclick="goBackHome()">← Back</button>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
+  </header>
 
-    <main class="page-shell container">
-      <div class="section-heading page-header">
-        <span class="section-tag">Prediction Modes</span>
-        <h1>Select your input source</h1>
+  <!-- ── HERO ─────────────────────────────────────────────────────── -->
+  <div class="info-hero">
+    <div class="badge">📊 Dataset: atharvadarpude / indian-cattle-image-dataset &nbsp;·&nbsp; 50 Breeds</div>
+    <h1>Indian Cattle Breed <span>Encyclopedia</span></h1>
+    <div class="divider-line"></div>
+    <p>Explore detailed profiles of all cattle breeds used in our deep learning model — lifespan, weight, location, milk nutrients, and body features.</p>
+  </div>
+
+  <!-- ── PROJECT SUMMARY ──────────────────────────────────────────── -->
+  <div class="project-summary">
+    <div class="summary-card">
+
+      <div class="summary-section">
+        <h3>🎓 About the Project</h3>
+        <p>This system is a Final Year B.E. project at <strong style="color:#e8f4f0;">MIT Academy of Engineering, Alandi, Pune</strong>. It uses a Convolutional Neural Network (CNN) trained on the <em>Indian Cattle Image Dataset</em> by Atharva Darpude (Kaggle) to identify Indian cattle breeds from images, videos, or live camera input.</p>
+        <div style="margin-top:12px;">
+          <span class="stat-pill">96.4% Accuracy</span>
+          <span class="stat-pill">CNN Model</span>
+          <span class="stat-pill">Transfer Learning</span>
+          <span class="stat-pill">OpenCV</span>
+        </div>
       </div>
 
-      <section class="prediction-grid horizontal-grid">
-        <a class="action-card glass-panel" href="image-prediction.html">
-          <h2>Upload Image</h2>
-          <p>Select a cattle image from your device and preview it before running prediction.</p>
-          <span class="secondary-button">Go to Image Prediction</span>
-        </a>
+      <div class="summary-section">
+        <h3>📦 Dataset Details</h3>
+        <ul>
+          <li>Source: Kaggle — atharvadarpude</li>
+          <li>Dataset: Indian Cattle Image Dataset</li>
+          <li>50 Indian cattle breeds covered</li>
+          <li>Thousands of annotated images</li>
+          <li>Multiple angles &amp; lighting conditions</li>
+          <li>Govt. recognized indigenous breeds</li>
+          <li>Used for: Classification &amp; Feature Extraction</li>
+        </ul>
+      </div>
 
-        <a class="action-card glass-panel" href="video-prediction.html">
-          <h2>Upload Video</h2>
-          <p>Upload a cattle video, preview the clip and extract a frame for breed analysis.</p>
-          <span class="secondary-button">Go to Video Prediction</span>
-        </a>
+      <div class="summary-section">
+        <h3>⚙️ Model Pipeline</h3>
+        <ul>
+          <li>Image preprocessing via OpenCV</li>
+          <li>Data augmentation to reduce overfitting</li>
+          <li>CNN architecture (ResNet / MobileNet base)</li>
+          <li>50 training epochs, batch size 32</li>
+          <li>Softmax output layer for breed probabilities</li>
+          <li>Python · TensorFlow / Keras</li>
+          <li>Frontend: HTML, CSS, JavaScript</li>
+        </ul>
+      </div>
 
-        <a class="action-card glass-panel" href="camera-capture.html">
-          <h2>Capture Image</h2>
-          <p>Use the live camera feed to capture a clear image and perform quick prediction.</p>
-          <span class="secondary-button">Go to Camera Prediction</span>
-        </a>
-      </section>
-    </main>
+    </div>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <!-- ── FILTER BAR ────────────────────────────────────────────────── -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all">All Breeds</button>
+    <button class="filter-btn" data-filter="milch">Milch</button>
+    <button class="filter-btn" data-filter="draft">Draft</button>
+    <button class="filter-btn" data-filter="dual">Dual Purpose</button>
+    <input type="search" class="search-breeds" id="breedSearch" placeholder="🔍 Search breed name…" />
+  </div>
+
+  <!-- ── BREED GRID ────────────────────────────────────────────────── -->
+  <div class="breed-grid" id="breedGrid">
+    <!-- Cards are injected by JavaScript below -->
+  </div>
+
+  <!-- ── MODAL OVERLAY ─────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalBreedName">
+    <div class="modal-box" id="modalBox">
+      <div class="modal-header">
+        <div class="modal-emoji" id="modalEmoji"></div>
+        <div class="modal-breed-name" id="modalBreedName"></div>
+        <div class="modal-subtitle" id="modalSubtitle"></div>
+        <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────────── -->
+  <footer style="border-top:1px solid rgba(0,229,160,.1);padding:28px 5vw;text-align:center;font-size:.82rem;color:#4a7060;">
+    🐄 <strong style="color:#00e5a0;">Cattle AI</strong> &nbsp;|&nbsp;
+    MIT Academy of Engineering, Alandi — Final Year B.E. Project 2024
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+  /* ================================================================
+     INFORMATION PAGE — Breed data + interactive cards + modal
+  ================================================================ */
+
+  // ── Full breed database ──────────────────────────────────────────
+  const BREEDS = [
+    {
+      id: "gir",
+      name: "Gir",
+      emoji: "🐄",
+      location: "Gir Forest, Saurashtra, Gujarat",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "One of India's finest dairy breeds, famous for high A2 milk production and resilience in tropical climates.",
+      lifespan: "12–15 years",
+      weight: "385–550 kg (cow) · 550–800 kg (bull)",
+      height: "130–140 cm",
+      origin: "Gir Forest, Junagadh, Gujarat",
+      color: "Red / spotted white-red patches",
+      milkYield: "1200–3000 L / lactation",
+      milkFat: "4.5–5.5%",
+      milkProtein: "3.5%",
+      milkScore: 88,
+      features: [
+        "Prominent forehead dome (convex skull)",
+        "Long pendulous ears, folded like a leaf",
+        "Deep red or spotted red-white coat",
+        "Large hump over shoulders (zebu characteristic)",
+        "Long switch tail reaching to hocks",
+        "Loose pendulous dewlap",
+      ],
+      uses: "High-fat A2 milk, breed export to Brazil & Israel, sacred status in Gujarat",
+      conservation: "Thriving – exported globally; recognized by ICAR",
+    },
+    {
+      id: "sahiwal",
+      name: "Sahiwal",
+      emoji: "🐄",
+      location: "Montgomery, Punjab (undivided India)",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "Considered the best dairy breed in Asia; highly heat-tolerant with rich, creamy milk.",
+      lifespan: "12–14 years",
+      weight: "300–400 kg (cow) · 450–600 kg (bull)",
+      height: "125–135 cm",
+      origin: "Montgomery District, Punjab",
+      color: "Reddish-brown / dull red",
+      milkYield: "1400–2500 L / lactation",
+      milkFat: "4.5–5.0%",
+      milkProtein: "3.6%",
+      milkScore: 85,
+      features: [
+        "Compact, medium-sized frame",
+        "Short, thick neck with small hump",
+        "Loose, pendulous skin folds",
+        "Dull-red to brownish coat",
+        "Short, flat horns curving outward",
+        "Well-developed udder with good milk veins",
+      ],
+      uses: "Primarily dairy; crossbreeding in Africa and Australia",
+      conservation: "Well-preserved; cross-bred globally for tropical dairying",
+    },
+    {
+      id: "red_sindhi",
+      name: "Red Sindhi",
+      emoji: "🐄",
+      location: "Karachi & Hyderabad, Sindh (Pakistan / undivided India)",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "Heat-tolerant red dairy breed, popular across tropical Asia and Latin America.",
+      lifespan: "12–15 years",
+      weight: "280–340 kg (cow) · 420–540 kg (bull)",
+      height: "120–130 cm",
+      origin: "Sindh province",
+      color: "Deep red / dark reddish-brown",
+      milkYield: "1100–2100 L / lactation",
+      milkFat: "4.5–5.5%",
+      milkProtein: "3.4%",
+      milkScore: 80,
+      features: [
+        "Medium, compact body with deep red coat",
+        "Medium-sized curved horns",
+        "Moderately developed dewlap",
+        "Moderate hump over the withers",
+        "Good tick resistance due to dense skin",
+        "Fine skin with short, smooth hair",
+      ],
+      uses: "Dairy; crossbreeding programs in tropical countries",
+      conservation: "Stable; government breeding centres maintain purity",
+    },
+    {
+      id: "hariana",
+      name: "Hariana",
+      emoji: "🐄",
+      location: "Haryana, western Uttar Pradesh, Rajasthan",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Slim, elegant white cattle of north India — efficient draft workers and moderate milk producers.",
+      lifespan: "14–18 years",
+      weight: "280–370 kg (cow) · 430–580 kg (bull)",
+      height: "130–145 cm",
+      origin: "Rohtak, Hisar, Gurgaon districts, Haryana",
+      color: "White / light grey",
+      milkYield: "900–1600 L / lactation",
+      milkFat: "4.0–4.5%",
+      milkProtein: "3.3%",
+      milkScore: 60,
+      features: [
+        "Tall, lean, angular body frame",
+        "Long, narrow white face",
+        "Short, sharp, outward-turning horns",
+        "Small to medium straight hump",
+        "Thin skin, short glossy white coat",
+        "Powerful hindquarters for draft work",
+      ],
+      uses: "Ploughing, transport, moderate dairy",
+      conservation: "Stable; valued by farmers across Haryana",
+    },
+    {
+      id: "ongole",
+      name: "Ongole",
+      emoji: "🐄",
+      location: "Prakasam & Guntur districts, Andhra Pradesh",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Majestic, large white breed of south India, prized for draft strength and exported to Brazil as 'Nelore'.",
+      lifespan: "15–20 years",
+      weight: "350–450 kg (cow) · 550–900 kg (bull)",
+      height: "140–160 cm",
+      origin: "Ongole (Prakasam), Andhra Pradesh",
+      color: "White / grey-white",
+      milkYield: "600–1200 L / lactation",
+      milkFat: "4.0–4.8%",
+      milkProtein: "3.2%",
+      milkScore: 48,
+      features: [
+        "Very large, heavy muscular body",
+        "Massive, prominent hump (largest among Indian breeds)",
+        "Broad, flat forehead; large ears",
+        "Long, drooping dewlap",
+        "Dark grey skin around eyes and muzzle",
+        "Short, thick, curved horns pointing outward",
+      ],
+      uses: "Heavy draft, beef (exported as Nelore to Brazil)",
+      conservation: "Critically endangered in native tract; thriving as Nelore globally",
+    },
+    {
+      id: "kankrej",
+      name: "Kankrej",
+      emoji: "🐄",
+      location: "Rann of Kutch, North Gujarat & Rajasthan",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Swift, powerful draft cattle with a silver-grey coat and distinctive lyre-shaped horns.",
+      lifespan: "14–18 years",
+      weight: "320–420 kg (cow) · 500–700 kg (bull)",
+      height: "135–148 cm",
+      origin: "Kankrej region, Banaskantha, Gujarat",
+      color: "Silver-grey / iron-grey / steel blue",
+      milkYield: "900–1500 L / lactation",
+      milkFat: "3.8–4.5%",
+      milkProtein: "3.3%",
+      milkScore: 58,
+      features: [
+        "Muscular body with broad back",
+        "Distinctive lyre-shaped horns turning outward and backward",
+        "Short, thick neck with medium hump",
+        "Steel-grey to iron coat",
+        "Broad forehead, large eyes",
+        "Quick-stepping, energetic gait",
+      ],
+      uses: "Heavy draft, light dairy; known for extraordinary walking endurance",
+      conservation: "Well maintained; exported to Brazil as 'Guzerat'",
+    },
+    {
+      id: "tharparkar",
+      name: "Tharparkar",
+      emoji: "🐄",
+      location: "Thar Desert, Barmer, Rajasthan",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Desert-hardy white cattle renowned for surviving harsh arid conditions while maintaining good milk yields.",
+      lifespan: "14–18 years",
+      weight: "290–370 kg (cow) · 440–570 kg (bull)",
+      height: "128–140 cm",
+      origin: "Tharparkar district, Rajasthan (border of India-Pakistan)",
+      color: "White / grey-white",
+      milkYield: "1000–2200 L / lactation",
+      milkFat: "4.4–5.2%",
+      milkProtein: "3.5%",
+      milkScore: 72,
+      features: [
+        "Medium-sized, well-proportioned frame",
+        "Short, curved horns pointing upward",
+        "Thick, rough skin adapted to desert heat",
+        "Small, firm hump",
+        "Large, clear eyes with good desert vision",
+        "Long, deep barrel for water storage",
+      ],
+      uses: "Desert dairy and draft; community livelihood in Thar region",
+      conservation: "Endangered; active conservation by NRCE Bikaner",
+    },
+    {
+      id: "deoni",
+      name: "Deoni",
+      emoji: "🐄",
+      location: "Latur, Osmanabad, Bidar — Maharashtra & Karnataka",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Bold black-and-white spotted breed of the Deccan plateau, reliable for both dairy and fieldwork.",
+      lifespan: "12–16 years",
+      weight: "290–370 kg (cow) · 440–580 kg (bull)",
+      height: "128–138 cm",
+      origin: "Deccan Plateau, Latur, Maharashtra",
+      color: "Black & white patches (piebald)",
+      milkYield: "850–1600 L / lactation",
+      milkFat: "3.9–4.8%",
+      milkProtein: "3.3%",
+      milkScore: 56,
+      features: [
+        "Distinctive black-and-white piebald coat",
+        "Medium, compact muscular body",
+        "Short, thick horns curving outward",
+        "Moderate hump; straight topline",
+        "Pink muzzle and udder skin",
+        "Well-developed milk veins in lactating cows",
+      ],
+      uses: "Dual purpose — light ploughing and dairy",
+      conservation: "Moderate numbers; state government breed development programs",
+    },
+    {
+      id: "kangayam",
+      name: "Kangayam",
+      emoji: "🐄",
+      location: "Erode & Tiruppur districts, Tamil Nadu",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Strong, grey draft cattle from Tamil Nadu famous for agility on hilly terrain and endurance ploughing.",
+      lifespan: "15–20 years",
+      weight: "260–360 kg (cow) · 400–560 kg (bull)",
+      height: "120–135 cm",
+      origin: "Kangayam, Erode, Tamil Nadu",
+      color: "Grey / dark grey",
+      milkYield: "500–900 L / lactation",
+      milkFat: "4.2–5.0%",
+      milkProtein: "3.2%",
+      milkScore: 35,
+      features: [
+        "Compact, deep-chested frame",
+        "Short, thick horns curving upward then inward",
+        "Dark grey coat; black muzzle and hooves",
+        "Straight back, well-arched ribs",
+        "Hard, black hooves suited to rocky terrain",
+        "Energetic, alert temperament",
+      ],
+      uses: "Primarily draft and field ploughing; light dairy as secondary use",
+      conservation: "Endangered; protected by Kandaswami Kandar College farm, Erode",
+    },
+    {
+      id: "rathi",
+      name: "Rathi",
+      emoji: "🐄",
+      location: "Bikaner, Ganganagar, Hanumangarh — Rajasthan",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "The 'camel of cattle' — a highly productive dairy breed adapted to the harsh Thar desert environment.",
+      lifespan: "13–16 years",
+      weight: "280–360 kg (cow) · 420–560 kg (bull)",
+      height: "126–136 cm",
+      origin: "Bikaner region, Rajasthan",
+      color: "Brown with white patches / reddish-brown",
+      milkYield: "1200–2500 L / lactation",
+      milkFat: "4.8–5.4%",
+      milkProtein: "3.6%",
+      milkScore: 78,
+      features: [
+        "Medium-sized body with round barrel",
+        "Brown coat with irregular white spots",
+        "Short, slightly curved horns",
+        "Moderate hump; clean legs",
+        "Well-attached, symmetrical udder",
+        "Efficient feed conversion in sparse vegetation",
+      ],
+      uses: "High-yielding desert dairy; livelihood of Raikas (pastoral community)",
+      conservation: "Stable; National Bureau of Animal Genetic Resources (NBAGR) registered",
+    },
+    // ── 40 NEW BREEDS ─────────────────────────────────────────────
+    {
+      id: "amritmahal",
+      name: "Amritmahal",
+      emoji: "🐄",
+      location: "Hassan, Chikkamagaluru, Tumkur — Karnataka",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "An ancient royal war-cattle breed of Karnataka, bred by Hyder Ali for military campaigns — lightning-fast and fiercely enduring.",
+      lifespan: "15–20 years",
+      weight: "270–350 kg (cow) · 400–550 kg (bull)",
+      height: "125–138 cm",
+      origin: "Doab region, Hassan district, Karnataka",
+      color: "Grey / dark grey with black markings",
+      milkYield: "400–700 L / lactation",
+      milkFat: "4.5–5.2%",
+      milkProtein: "3.3%",
+      milkScore: 28,
+      features: [
+        "Slim, athletic, well-muscled body",
+        "Long, horizontal sharp horns",
+        "Dark grey coat with black stripes on face",
+        "Short, clean legs with hard black hooves",
+        "Highly alert, nervous temperament",
+        "Prominent withers and tight skin",
+      ],
+      uses: "Heavy draft ploughing; historically used in Mysore army transport",
+      conservation: "Endangered; maintained at government farms in Karnataka",
+    },
+    {
+      id: "ayrshire",
+      name: "Ayrshire",
+      emoji: "🐄",
+      location: "Ayrshire, Scotland (now maintained across India)",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "A hardy British dairy breed introduced to India for crossbreeding, known for efficient milk production and rugged adaptability.",
+      lifespan: "10–15 years",
+      weight: "400–550 kg (cow) · 600–800 kg (bull)",
+      height: "135–148 cm",
+      origin: "Ayrshire county, Scotland, UK",
+      color: "Red & white / brown & white patches",
+      milkYield: "3000–5500 L / lactation",
+      milkFat: "3.8–4.2%",
+      milkProtein: "3.3%",
+      milkScore: 82,
+      features: [
+        "Medium-large, wedge-shaped dairy frame",
+        "Red and white or brown and white spotted coat",
+        "Long, upward-swept lyre-shaped horns",
+        "Well-attached, strongly developed udder",
+        "Strong legs, sound feet",
+        "Alert, active temperament",
+      ],
+      uses: "High-volume dairy; crossbreeding with Indian breeds for tropical adaptation",
+      conservation: "Exotic breed — imported stock maintained at state farms",
+    },
+    {
+      id: "bargur",
+      name: "Bargur",
+      emoji: "🐄",
+      location: "Bargur Hills, Erode district, Tamil Nadu",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "A rare hill-breed from Tamil Nadu's forest hills, remarkably sure-footed on steep terrain and heat-resistant.",
+      lifespan: "14–18 years",
+      weight: "240–320 kg (cow) · 360–480 kg (bull)",
+      height: "118–130 cm",
+      origin: "Bargur Hills, Erode, Tamil Nadu",
+      color: "Brown with white dorsal stripe / brindle",
+      milkYield: "400–700 L / lactation",
+      milkFat: "4.8–5.5%",
+      milkProtein: "3.4%",
+      milkScore: 25,
+      features: [
+        "Short, compact body built for hill terrain",
+        "Distinct white dorsal stripe from neck to tail",
+        "Short, sharp upward-curving horns",
+        "Brown to brindle coat",
+        "Very hard, rounded hooves for rocky paths",
+        "Swift, agile movement on steep slopes",
+      ],
+      uses: "Forest draft work; hill ploughing; community ceremonial use",
+      conservation: "Critically endangered; Tamil Nadu livestock dept breeding program",
+    },
+    {
+      id: "dangi",
+      name: "Dangi",
+      emoji: "🐄",
+      location: "Nashik, Ahmednagar, Thane — Maharashtra",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Black-and-white hill cattle of Maharashtra's Sahyadri ranges, built for wet-weather ploughing in heavy black soils.",
+      lifespan: "14–18 years",
+      weight: "260–360 kg (cow) · 400–520 kg (bull)",
+      height: "120–134 cm",
+      origin: "Dangs region, Nashik, Maharashtra",
+      color: "Black & white patches / dark grey",
+      milkYield: "500–900 L / lactation",
+      milkFat: "4.2–5.0%",
+      milkProtein: "3.3%",
+      milkScore: 30,
+      features: [
+        "Short, compact, well-muscled frame",
+        "Black and white patchy coat",
+        "Short, thick curved horns",
+        "Moderate hump; strong legs",
+        "Hard hooves adapted to wet black-soil terrain",
+        "Calm temperament; easy to handle",
+      ],
+      uses: "Wet-land ploughing; carrying loads in hilly areas",
+      conservation: "Stable; ICAR-registered breed with active conservation",
+    },
+    {
+      id: "hallikar",
+      name: "Hallikar",
+      emoji: "🐄",
+      location: "Mandya, Mysore, Tumkur — Karnataka",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "The parent breed of the famous Amritmahal — elegant, long-horned grey cattle prized for speed and endurance.",
+      lifespan: "15–20 years",
+      weight: "280–370 kg (cow) · 420–560 kg (bull)",
+      height: "130–145 cm",
+      origin: "Hallikar region, Mandya, Karnataka",
+      color: "Grey / dark grey",
+      milkYield: "500–900 L / lactation",
+      milkFat: "4.4–5.2%",
+      milkProtein: "3.3%",
+      milkScore: 30,
+      features: [
+        "Tall, slender, graceful body",
+        "Long, tapering horns sweeping back and upward",
+        "Grey coat darkening towards neck and head",
+        "Prominent, sharp withers",
+        "Fine skin with short, shiny hair",
+        "Highly alert with nervous energy",
+      ],
+      uses: "Fast road and field draft; ceremonial use in Karnataka festivals",
+      conservation: "Endangered; Hallikar breed society active in Mandya",
+    },
+    {
+      id: "himachali_pahari",
+      name: "Himachali Pahari",
+      emoji: "🐄",
+      location: "Himachal Pradesh — Kangra, Mandi, Shimla",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "A cold-adapted hill breed of the Himalayas, small but incredibly hardy in sub-zero mountain conditions.",
+      lifespan: "12–16 years",
+      weight: "180–280 kg (cow) · 280–400 kg (bull)",
+      height: "108–122 cm",
+      origin: "Kangra & Mandi valleys, Himachal Pradesh",
+      color: "Brown / black-brown / fawn",
+      milkYield: "500–1100 L / lactation",
+      milkFat: "4.8–5.8%",
+      milkProtein: "3.6%",
+      milkScore: 38,
+      features: [
+        "Small, compact body with heavy bone density",
+        "Thick, shaggy coat for insulation in cold",
+        "Short, twisted horns pointing forward",
+        "Strong, round hooves for rocky mountain trails",
+        "Deep chest for high-altitude oxygen efficiency",
+        "Docile temperament; suited to family farming",
+      ],
+      uses: "Mountain dairy and light draft; milk for home consumption in hills",
+      conservation: "Stable in native hills; NBAGR recognized",
+    },
+    {
+      id: "kenkatha",
+      name: "Kenkatha",
+      emoji: "🐄",
+      location: "Banda, Hamirpur, Mahoba — Uttar Pradesh & Madhya Pradesh",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Hardy Bundelkhand cattle, small yet powerful plough animals adapted to the rocky vindhyan plateau.",
+      lifespan: "14–17 years",
+      weight: "220–300 kg (cow) · 320–440 kg (bull)",
+      height: "112–125 cm",
+      origin: "Ken river valley, Bundelkhand, UP/MP",
+      color: "White / light grey",
+      milkYield: "400–700 L / lactation",
+      milkFat: "4.5–5.2%",
+      milkProtein: "3.3%",
+      milkScore: 26,
+      features: [
+        "Small but robust, muscular body",
+        "Short, sharp pointed horns curving upward",
+        "White or light grey coat",
+        "Hard, compact hooves for rocky ground",
+        "Energetic, stubborn working temperament",
+        "Minimal water and feed requirement",
+      ],
+      uses: "Ploughing rocky Bundelkhand fields; light transport",
+      conservation: "Endangered; Ken river basin conservation efforts ongoing",
+    },
+    {
+      id: "khariar",
+      name: "Khariar",
+      emoji: "🐄",
+      location: "Nuapada, Bolangir — Odisha",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "A forest-adapted tribal cattle breed from western Odisha, unknown outside its native region but invaluable locally.",
+      lifespan: "13–17 years",
+      weight: "230–310 kg (cow) · 340–460 kg (bull)",
+      height: "115–128 cm",
+      origin: "Khariar region, Nuapada, Odisha",
+      color: "Red / brown-red",
+      milkYield: "400–650 L / lactation",
+      milkFat: "4.6–5.4%",
+      milkProtein: "3.3%",
+      milkScore: 24,
+      features: [
+        "Medium-small, moderately muscled frame",
+        "Short upward-curving horns",
+        "Reddish-brown smooth coat",
+        "Moderate hump; clean neck",
+        "Adapted to dry deciduous forest terrain",
+        "Low-maintenance under tribal farming conditions",
+      ],
+      uses: "Field ploughing, pack transport in tribal Odisha",
+      conservation: "Rare; recognized by NBAGR; minimal formal conservation",
+    },
+    {
+      id: "khillari",
+      name: "Khillari",
+      emoji: "🐄",
+      location: "Satara, Sholapur, Sangli — Maharashtra & Karnataka",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Swift, powerful and handsome grey cattle of the Deccan, bred for speed and sustained hard field work.",
+      lifespan: "15–20 years",
+      weight: "280–370 kg (cow) · 430–590 kg (bull)",
+      height: "128–144 cm",
+      origin: "Khillari, Satara district, Maharashtra",
+      color: "Grey / white-grey",
+      milkYield: "450–800 L / lactation",
+      milkFat: "4.5–5.3%",
+      milkProtein: "3.3%",
+      milkScore: 28,
+      features: [
+        "Lean, long-limbed athletic body",
+        "Long, forward-pointing sharp horns",
+        "Fine, glossy grey coat",
+        "Tight skin; clearly visible muscles",
+        "Prominent, sharp dorsal ridge",
+        "Spirited, fast-paced gait",
+      ],
+      uses: "Fast bullock cart racing; deep ploughing in hard soils",
+      conservation: "Endangered; Maharashtra state programme at Satara farm",
+    },
+    {
+      id: "konkan_kapila",
+      name: "Konkan Kapila",
+      emoji: "🐄",
+      location: "Sindhudurg, Ratnagiri — Konkan Coast, Maharashtra",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "A rare coastal breed of Maharashtra's Konkan belt, adapted to humid conditions and coastal farming.",
+      lifespan: "12–15 years",
+      weight: "230–310 kg (cow) · 330–450 kg (bull)",
+      height: "112–124 cm",
+      origin: "Sindhudurg, Konkan, Maharashtra",
+      color: "White / light cream",
+      milkYield: "600–1000 L / lactation",
+      milkFat: "4.6–5.4%",
+      milkProtein: "3.4%",
+      milkScore: 36,
+      features: [
+        "Compact, small-to-medium frame",
+        "Short curved horns pointing backward",
+        "White or cream smooth coat",
+        "Tick-resistant skin in coastal humidity",
+        "Moderate dewlap; medium-sized hump",
+        "Calm temperament; easy to manage",
+      ],
+      uses: "Small-scale dairy; coastal paddy field ploughing",
+      conservation: "Critically endangered; Konkan Krishi Vidyapeeth conserving breed",
+    },
+    {
+      id: "kosali",
+      name: "Kosali",
+      emoji: "🐄",
+      location: "Raipur, Bilaspur, Durg — Chhattisgarh",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "The indigenous cattle of Chhattisgarh's Chhattisgarh plains, well-suited to the region's rice-growing culture.",
+      lifespan: "13–16 years",
+      weight: "240–330 kg (cow) · 360–490 kg (bull)",
+      height: "118–132 cm",
+      origin: "Kosala region (Raipur / Bilaspur), Chhattisgarh",
+      color: "White / grey-white",
+      milkYield: "500–900 L / lactation",
+      milkFat: "4.3–5.1%",
+      milkProtein: "3.3%",
+      milkScore: 32,
+      features: [
+        "Medium body with moderate hump",
+        "Short, straight or slightly curved horns",
+        "White to grey smooth coat",
+        "Well-developed hindquarters for paddy ploughing",
+        "Moderately long dewlap",
+        "Tolerant to high humidity and seasonal flooding",
+      ],
+      uses: "Paddy field ploughing; light dairy for family use",
+      conservation: "Recognized by NBAGR; state-level conservation ongoing",
+    },
+    {
+      id: "krishna_valley",
+      name: "Krishna Valley",
+      emoji: "🐄",
+      location: "Belgaum, Bijapur — Karnataka & Kolhapur, Maharashtra",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "One of India's largest indigenous breeds, developed to plough the rich black cotton soils of the Krishna river basin.",
+      lifespan: "14–18 years",
+      weight: "340–450 kg (cow) · 500–750 kg (bull)",
+      height: "140–158 cm",
+      origin: "Krishna river valley, Bijapur, Karnataka",
+      color: "White / light grey",
+      milkYield: "600–1000 L / lactation",
+      milkFat: "4.0–4.8%",
+      milkProtein: "3.2%",
+      milkScore: 36,
+      features: [
+        "Very large, heavy body — one of India's tallest breeds",
+        "Long, outward-sweeping massive horns",
+        "Broad forehead; large, calm eyes",
+        "Massive dewlap and well-developed hump",
+        "White or light grey coat",
+        "Powerful, slow, steady gait",
+      ],
+      uses: "Heavy cotton-soil ploughing; bullock cart haulage",
+      conservation: "Endangered; genetic resource maintained at Bijapur farm",
+    },
+    {
+      id: "ladakhi",
+      name: "Ladakhi",
+      emoji: "🐄",
+      location: "Leh, Kargil — Ladakh (UT)",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Tiny, ultra cold-resistant cattle living at altitudes above 3500 m — among the world's highest-altitude cattle.",
+      lifespan: "12–16 years",
+      weight: "150–230 kg (cow) · 220–340 kg (bull)",
+      height: "100–116 cm",
+      origin: "Leh district, Ladakh, J&K/UT",
+      color: "Black / brown / grey",
+      milkYield: "300–600 L / lactation",
+      milkFat: "5.5–7.0%",
+      milkProtein: "4.0%",
+      milkScore: 22,
+      features: [
+        "Very small body with dense, shaggy coat",
+        "Short, stout legs built for rocky altitude terrain",
+        "Extra-large lungs for altitude oxygen extraction",
+        "Small, compact hooves — hard as stone",
+        "Deep chest; round barrel",
+        "Extremely docile; lives with family in winter",
+      ],
+      uses: "High-altitude dairy; pack animal for trekking routes",
+      conservation: "Rare; isolated to Ladakh — natural geographic protection",
+    },
+    {
+      id: "lakhimi",
+      name: "Lakhimi",
+      emoji: "🐄",
+      location: "Dhemaji, Lakhimpur, Dibrugarh — Assam",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "The gentle dairy cattle of upper Assam's floodplains, adapted to high-rainfall, flood-prone riverine ecosystems.",
+      lifespan: "12–15 years",
+      weight: "220–300 kg (cow) · 320–440 kg (bull)",
+      height: "110–124 cm",
+      origin: "Lakhimpur district, Assam",
+      color: "Black / dark brown",
+      milkYield: "700–1300 L / lactation",
+      milkFat: "4.4–5.2%",
+      milkProtein: "3.5%",
+      milkScore: 42,
+      features: [
+        "Small, compact body with shiny black coat",
+        "Short, curved horns pointing upward",
+        "Well-developed udder for its small size",
+        "Tick-resistant smooth skin",
+        "Adapted to waterlogged, flood-prone terrain",
+        "Gentle, calm temperament",
+      ],
+      uses: "Family dairy in Assam tea-garden belt; light draft",
+      conservation: "Stable in native habitat; NBAGR registered",
+    },
+    {
+      id: "malnad_gidda",
+      name: "Malnad Gidda",
+      emoji: "🐄",
+      location: "Shimoga, Chikkamagaluru, Hassan — Karnataka",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "India's smallest cattle breed — the 'miniature' of the Malnad forests, sacred to local communities and remarkably disease-resistant.",
+      lifespan: "14–18 years",
+      weight: "80–130 kg (cow) · 100–180 kg (bull)",
+      height: "85–100 cm",
+      origin: "Malnad region, Western Ghats, Karnataka",
+      color: "Black / brown / fawn",
+      milkYield: "200–500 L / lactation",
+      milkFat: "5.5–7.0%",
+      milkProtein: "4.2%",
+      milkScore: 18,
+      features: [
+        "Extremely small, dwarf body — under 1 metre tall",
+        "Short, stubby horns or polled (hornless)",
+        "Dense, glossy dark coat",
+        "Exceptional tick and disease resistance",
+        "Thrives on minimal forest forage",
+        "Sacred status in local tribal communities",
+      ],
+      uses: "Sacred/ritual use; limited A2 milk rich in nutrients; forest grazing",
+      conservation: "Critically endangered; Karnataka Govt Project Malnad Gidda",
+    },
+    {
+      id: "mewati",
+      name: "Mewati",
+      emoji: "🐄",
+      location: "Alwar, Bharatpur — Rajasthan & Haryana",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "A large, white dual-purpose breed of the Mewat region, combining the working ability of Hariana with the milking traits of Sahiwal.",
+      lifespan: "14–18 years",
+      weight: "310–400 kg (cow) · 470–620 kg (bull)",
+      height: "132–146 cm",
+      origin: "Mewat district, Alwar, Rajasthan",
+      color: "White / grey-white",
+      milkYield: "1000–1800 L / lactation",
+      milkFat: "4.2–4.9%",
+      milkProtein: "3.4%",
+      milkScore: 58,
+      features: [
+        "Tall, well-built frame — cross between Hariana traits",
+        "Long, fine white face with bright eyes",
+        "Short to medium curved horns",
+        "Moderate, well-placed hump",
+        "Clean, strong legs",
+        "Docile, easy to manage",
+      ],
+      uses: "Dual purpose — moderate dairy and agricultural draft",
+      conservation: "Stable; NBAGR registered; common in Rajasthan-Haryana belt",
+    },
+    {
+      id: "nari",
+      name: "Nari",
+      emoji: "🐄",
+      location: "Barmer, Jaisalmer — Rajasthan",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Desert-specialist cattle of the remote Thar, able to survive days without water — sometimes called the 'cattle camel' of Rajasthan.",
+      lifespan: "13–17 years",
+      weight: "220–310 kg (cow) · 330–470 kg (bull)",
+      height: "118–132 cm",
+      origin: "Nari River tract, Barmer, Rajasthan",
+      color: "Grey / white",
+      milkYield: "500–900 L / lactation",
+      milkFat: "4.8–5.6%",
+      milkProtein: "3.5%",
+      milkScore: 33,
+      features: [
+        "Medium-small frame with deep barrel for fat storage",
+        "Thick, rough heat-resistant skin",
+        "Small eyes with heavy brow ridge",
+        "Short horns; compact head",
+        "Very low water requirement — extreme desert adaptation",
+        "Dense bone structure",
+      ],
+      uses: "Desert draft, light dairy; nomadic Rabari community livelihood",
+      conservation: "Rare; remote geographic distribution provides partial protection",
+    },
+    {
+      id: "nimari",
+      name: "Nimari",
+      emoji: "🐄",
+      location: "Khargone, Barwani, Khandwa — Madhya Pradesh",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Robust Nimar valley cattle developed by mixing Gir and Khillari blood — strong draft animals that also yield reasonable milk.",
+      lifespan: "14–18 years",
+      weight: "290–380 kg (cow) · 440–600 kg (bull)",
+      height: "128–142 cm",
+      origin: "Nimar region, Khargone, Madhya Pradesh",
+      color: "Red / brown-red",
+      milkYield: "800–1400 L / lactation",
+      milkFat: "4.3–5.1%",
+      milkProtein: "3.4%",
+      milkScore: 48,
+      features: [
+        "Medium-large body with strong bone structure",
+        "Reddish coat — trait inherited from Gir ancestry",
+        "Medium curved horns",
+        "Well-developed hump",
+        "Broad chest; powerful hindquarters",
+        "Suitable for both cotton and cereal field work",
+      ],
+      uses: "Cotton field ploughing; moderate dairy",
+      conservation: "Stable; NBAGR registered; common in Nimar valley",
+    },
+    {
+      id: "poda_thirupu",
+      name: "Poda Thirupu",
+      emoji: "🐄",
+      location: "East Godavari, West Godavari — Andhra Pradesh",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "A lesser-known but hardy draft breed of the Godavari delta, suited to rice paddy field cultivation in alluvial soils.",
+      lifespan: "13–17 years",
+      weight: "250–340 kg (cow) · 380–500 kg (bull)",
+      height: "120–134 cm",
+      origin: "Godavari delta region, Andhra Pradesh",
+      color: "White / grey",
+      milkYield: "450–750 L / lactation",
+      milkFat: "4.1–4.9%",
+      milkProtein: "3.2%",
+      milkScore: 27,
+      features: [
+        "Medium frame, well-proportioned",
+        "Short, outward-pointing horns",
+        "White or grey smooth coat",
+        "Adapted to waterlogged paddy conditions",
+        "Moderate hump; long tail",
+        "Mild temperament",
+      ],
+      uses: "Paddy field ploughing in delta agriculture",
+      conservation: "Endangered; minimal formal conservation; NBAGR listed",
+    },
+    {
+      id: "pulikulam",
+      name: "Pulikulam",
+      emoji: "🐄",
+      location: "Madurai, Sivaganga, Virudhunagar — Tamil Nadu",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Famous as the 'Jallikattu bull' — bred for generations specifically for the traditional Tamil bull-taming sport.",
+      lifespan: "15–20 years",
+      weight: "250–360 kg (cow) · 400–580 kg (bull)",
+      height: "120–136 cm",
+      origin: "Pulikulam village, Sivaganga, Tamil Nadu",
+      color: "Grey / dark grey with black markings",
+      milkYield: "400–650 L / lactation",
+      milkFat: "4.5–5.5%",
+      milkProtein: "3.4%",
+      milkScore: 24,
+      features: [
+        "Compact, muscular body with tight skin",
+        "Short, strong, sharp horns",
+        "Dark grey coat with black face and legs",
+        "Extremely agile and quick reflexes",
+        "High-strung, aggressive temperament",
+        "Strong, heavy hindquarters for burst sprinting",
+      ],
+      uses: "Jallikattu sport; field ploughing; cultural heritage of Tamil Nadu",
+      conservation: "Protected under Tamil Nadu Jallikattu Act; actively bred",
+    },
+    {
+      id: "punganur",
+      name: "Punganur",
+      emoji: "🐄",
+      location: "Chittoor district — Andhra Pradesh",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "One of the world's smallest cattle breeds with the highest fat-percentage milk — a true genetic wonder from Rayalaseema.",
+      lifespan: "14–18 years",
+      weight: "70–120 kg (cow) · 100–160 kg (bull)",
+      height: "70–90 cm",
+      origin: "Punganur, Chittoor, Andhra Pradesh",
+      color: "White / grey / brown",
+      milkYield: "150–300 L / lactation",
+      milkFat: "8.0–13.5%",
+      milkProtein: "4.5%",
+      milkScore: 30,
+      features: [
+        "Extremely small, dwarf body — shortest cattle in India",
+        "Wide forehead with short upturned horns",
+        "Round, barrel-shaped body",
+        "Disproportionately rich milk for its size",
+        "Exceptionally docile and gentle",
+        "Thrives on minimal coarse fodder",
+      ],
+      uses: "Sacred household cattle; ultra-rich A2 milk; Panchagavya products",
+      conservation: "Critically endangered; AP Govt Punganur Conservation Centre, Chittoor",
+    },
+    {
+      id: "purnea",
+      name: "Purnea",
+      emoji: "🐄",
+      location: "Purnia, Katihar, Araria — Bihar",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "The local cattle of north-Bihar's terai belt — tolerant of high humidity and monsoon flooding.",
+      lifespan: "12–15 years",
+      weight: "220–310 kg (cow) · 340–460 kg (bull)",
+      height: "112–126 cm",
+      origin: "Purnia district, Bihar",
+      color: "Black / dark grey",
+      milkYield: "500–900 L / lactation",
+      milkFat: "4.4–5.2%",
+      milkProtein: "3.4%",
+      milkScore: 35,
+      features: [
+        "Small to medium body; deep chest",
+        "Short, curved horns",
+        "Dark, smooth coat suited to terai humidity",
+        "Strong hooves for wet alluvial fields",
+        "Moderate hump; long dewlap",
+        "Docile and easy to manage",
+      ],
+      uses: "Dual dairy and draft in Bihar's northern flood plains",
+      conservation: "Stable; local breeding maintained by smallholder farmers",
+    },
+    {
+      id: "red_kandhari",
+      name: "Red Kandhari",
+      emoji: "🐄",
+      location: "Nanded, Latur, Osmanabad — Maharashtra",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Deep red-coloured cattle of the Marathwada region, combining utility in field work with a reasonable dairy yield.",
+      lifespan: "13–16 years",
+      weight: "270–360 kg (cow) · 400–550 kg (bull)",
+      height: "122–136 cm",
+      origin: "Kandhar region, Nanded, Maharashtra",
+      color: "Deep red / dark red-brown",
+      milkYield: "700–1300 L / lactation",
+      milkFat: "4.2–5.0%",
+      milkProtein: "3.4%",
+      milkScore: 46,
+      features: [
+        "Medium body; striking deep red coat",
+        "Short, stout horns curving forward",
+        "Dark red face with light-coloured eyes",
+        "Moderate hump and dewlap",
+        "Compact, well-muscled hindquarters",
+        "Heat-tolerant; suited to Deccan climate",
+      ],
+      uses: "Agricultural draft; moderate dairy",
+      conservation: "Stable; NBAGR registered; Nanded district farms",
+    },
+    {
+      id: "shweta_kapila",
+      name: "Shweta Kapila",
+      emoji: "🐄",
+      location: "Udupi, Dakshina Kannada — Karnataka",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "A rare sacred white cattle breed of coastal Karnataka, traditionally maintained in temple herds for religious use.",
+      lifespan: "13–16 years",
+      weight: "220–310 kg (cow) · 340–470 kg (bull)",
+      height: "114–128 cm",
+      origin: "Coastal Udupi & Dakshina Kannada, Karnataka",
+      color: "Pure white",
+      milkYield: "600–1000 L / lactation",
+      milkFat: "4.6–5.4%",
+      milkProtein: "3.5%",
+      milkScore: 36,
+      features: [
+        "Pure white, lustrous coat — no other colour markings",
+        "Medium-small compact body",
+        "Short, fine horns pointing upward",
+        "Pink muzzle and light pink udder",
+        "Gentle, calm disposition — ideal for temple upkeep",
+        "Strong resistance to coastal tick infestations",
+      ],
+      uses: "Sacred/religious temple cattle; household dairy in coastal Karnataka",
+      conservation: "Critically endangered; temple herd conservation programs",
+    },
+    {
+      id: "umblachery",
+      name: "Umblachery",
+      emoji: "🐄",
+      location: "Thanjavur, Nagapattinam, Tiruvarur — Tamil Nadu",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Small, powerful paddy-field cattle of the Cauvery delta — the backbone of traditional Thanjavur rice farming.",
+      lifespan: "14–18 years",
+      weight: "220–300 kg (cow) · 330–450 kg (bull)",
+      height: "112–124 cm",
+      origin: "Umblachery village, Thanjavur delta, Tamil Nadu",
+      color: "Grey / dark grey with black markings",
+      milkYield: "350–650 L / lactation",
+      milkFat: "4.5–5.5%",
+      milkProtein: "3.4%",
+      milkScore: 24,
+      features: [
+        "Short, compact, heavily muscled body",
+        "Short, sharp horns with black tips",
+        "Grey coat with characteristic black face",
+        "Black hooves and black-tipped tail",
+        "Very strong hindquarters for paddy-field traction",
+        "Extremely agile in waterlogged field conditions",
+      ],
+      uses: "Paddy ploughing; threshing; integral to Cauvery delta farming",
+      conservation: "Endangered; Tamil Nadu Agriculture Dept breed station, Thanjavur",
+    },
+    {
+      id: "vechur",
+      name: "Vechur",
+      emoji: "🐄",
+      location: "Kottayam, Ernakulam — Kerala",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "The world's smallest cattle breed by height — a living national treasure of Kerala, producing nutritious A2 milk despite its miniature size.",
+      lifespan: "14–18 years",
+      weight: "60–100 kg (cow) · 80–130 kg (bull)",
+      height: "87–91 cm",
+      origin: "Vechur village, Kottayam, Kerala",
+      color: "Black / brown / fawn / white",
+      milkYield: "150–350 L / lactation",
+      milkFat: "6.0–8.5%",
+      milkProtein: "4.2%",
+      milkScore: 28,
+      features: [
+        "World's smallest cattle — recorded in Guinness World Records",
+        "Tiny, compact, barrel-shaped body",
+        "Very short, fine horns or polled",
+        "Coat varies: black, brown, or fawn",
+        "Highly disease-resistant; rarely needs veterinary care",
+        "Calm, gentle — kept as pet-cattle in homes",
+      ],
+      uses: "Sacred household cattle; Ayurvedic ghee; ultra-rich A2 milk",
+      conservation: "Critically endangered; saved by Dr. Sosamma Iype, KAU Thrissur",
+    },
+    {
+      id: "bachaur",
+      name: "Bachaur",
+      emoji: "🐄",
+      location: "Sitamarhi, Sheohar, Muzaffarpur — Bihar",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "The native cattle of north Bihar's Mithila region — moderate producers suited to the alluvial Gangetic plains.",
+      lifespan: "13–16 years",
+      weight: "240–330 kg (cow) · 360–490 kg (bull)",
+      height: "118–132 cm",
+      origin: "Bachaur, Sitamarhi district, Bihar",
+      color: "White / grey",
+      milkYield: "600–1100 L / lactation",
+      milkFat: "4.3–5.0%",
+      milkProtein: "3.4%",
+      milkScore: 38,
+      features: [
+        "Medium body, straight topline",
+        "Short, outward-curving horns",
+        "White or grey smooth coat",
+        "Moderate hump and dewlap",
+        "Adapted to high water-table alluvial plains",
+        "Docile, easy to manage",
+      ],
+      uses: "Field ploughing; moderate dairy for home consumption",
+      conservation: "Stable; NBAGR registered breed of Bihar",
+    },
+    {
+      id: "badri",
+      name: "Badri",
+      emoji: "🐄",
+      location: "Chamoli, Pauri Garhwal, Tehri — Uttarakhand",
+      type: "milch",
+      typeLabel: "Milch Breed",
+      blurb: "Sacred mountain cattle of the Garhwal Himalayas — small, cold-hardy, producing high-fat milk for ghee at altitude.",
+      lifespan: "12–15 years",
+      weight: "160–260 kg (cow) · 250–380 kg (bull)",
+      height: "100–118 cm",
+      origin: "Badrinath region, Chamoli, Uttarakhand",
+      color: "Black / brown / fawn",
+      milkYield: "400–900 L / lactation",
+      milkFat: "5.0–6.5%",
+      milkProtein: "3.8%",
+      milkScore: 32,
+      features: [
+        "Small to medium body; dense coat for cold",
+        "Short, curved horns",
+        "Black or dark brown coat with thick undercoat",
+        "Compact, sturdy legs for mountain trails",
+        "Deep chest for altitude oxygen",
+        "Sacred cattle — used in Char Dham pilgrimages",
+      ],
+      uses: "High-altitude dairy; sacred/ritual use in Himalayan temples",
+      conservation: "Stable in hills; Badri Cow Conservation Mission, Uttarakhand Govt",
+    },
+    {
+      id: "bhelai",
+      name: "Bhelai",
+      emoji: "🐄",
+      location: "Durg, Rajnandgaon — Chhattisgarh",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "A hardy working breed of central India's forested plateau, adapted to the laterite soils of Chhattisgarh.",
+      lifespan: "13–17 years",
+      weight: "240–330 kg (cow) · 360–490 kg (bull)",
+      height: "116–130 cm",
+      origin: "Bhelai tract, Durg, Chhattisgarh",
+      color: "White / grey",
+      milkYield: "400–700 L / lactation",
+      milkFat: "4.3–5.0%",
+      milkProtein: "3.3%",
+      milkScore: 26,
+      features: [
+        "Medium, well-built compact body",
+        "Short, forward-curving horns",
+        "White or grey smooth coat",
+        "Hard hooves for laterite soil terrain",
+        "Moderate hump; short neck",
+        "Heat and tick resistant",
+      ],
+      uses: "Agricultural ploughing in central India's plateaus",
+      conservation: "Rare; NBAGR listed; minimal formal conservation program",
+    },
+    {
+      id: "dagri",
+      name: "Dagri",
+      emoji: "🐄",
+      location: "Pathankot, Gurdaspur, Kangra — Punjab & Himachal Pradesh",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "A draught-adapted foothills breed from the Shivalik ranges, bridging plains and mountain cattle characteristics.",
+      lifespan: "13–17 years",
+      weight: "230–320 kg (cow) · 340–470 kg (bull)",
+      height: "115–128 cm",
+      origin: "Dag region, Pathankot, Punjab foothills",
+      color: "White / light grey",
+      milkYield: "450–800 L / lactation",
+      milkFat: "4.3–5.0%",
+      milkProtein: "3.3%",
+      milkScore: 28,
+      features: [
+        "Medium, compact body built for hill footing",
+        "Short sturdy horns",
+        "Light grey smooth coat",
+        "Strong legs with hard hooves",
+        "Moderate hump and dewlap",
+        "Tolerates both hot plains and cool hills",
+      ],
+      uses: "Foothills ploughing and light transport",
+      conservation: "Endangered; NBAGR registered; Punjab foothills habitat",
+    },
+    {
+      id: "gangatari",
+      name: "Gangatari",
+      emoji: "🐄",
+      location: "Varanasi, Ghazipur, Ballia — Uttar Pradesh & Bihar",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "Gangetic plains cattle adapted to the sacred heartland of India — moderate yielders bred for centuries by river-bank farming communities.",
+      lifespan: "13–16 years",
+      weight: "250–340 kg (cow) · 370–510 kg (bull)",
+      height: "120–134 cm",
+      origin: "Ganga-Ghaghra doab, Varanasi, UP",
+      color: "White / grey-white",
+      milkYield: "700–1200 L / lactation",
+      milkFat: "4.2–4.9%",
+      milkProtein: "3.4%",
+      milkScore: 44,
+      features: [
+        "Medium body, moderately developed hump",
+        "Short, outward-curving white horns",
+        "White to grey coat",
+        "Broad forehead; large, quiet eyes",
+        "Well-adapted to Gangetic floodplains",
+        "Docile, temple-friendly temperament",
+      ],
+      uses: "Alluvial field ploughing; moderate dairy; river-bank farming",
+      conservation: "Stable; NBAGR registered breed of eastern UP",
+    },
+    {
+      id: "gaolao",
+      name: "Gaolao",
+      emoji: "🐄",
+      location: "Wardha, Nagpur, Chhindwara — Maharashtra & Madhya Pradesh",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "White Vidarbha cattle with a distinctive white-pink skin, highly valued for ploughing the deep black cotton soils of central India.",
+      lifespan: "14–18 years",
+      weight: "270–360 kg (cow) · 420–560 kg (bull)",
+      height: "126–140 cm",
+      origin: "Gaoli region, Wardha, Maharashtra",
+      color: "White with pink skin",
+      milkYield: "600–1000 L / lactation",
+      milkFat: "4.2–5.0%",
+      milkProtein: "3.3%",
+      milkScore: 36,
+      features: [
+        "White coat with characteristic pink/rose-tinted skin",
+        "Medium-large, muscular frame",
+        "Short, upward-sweeping horns",
+        "Prominent hump; broad back",
+        "Thin skin showing pink undertone beneath white hair",
+        "Strong legs for heavy cotton-soil ploughing",
+      ],
+      uses: "Deep black-soil ploughing; bullock cart haulage in Vidarbha",
+      conservation: "Endangered; Wardha district breeding farm active",
+    },
+    {
+      id: "ghumsari",
+      name: "Ghumsari",
+      emoji: "🐄",
+      location: "Gajapati, Kandhamal — Odisha",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "A tribal hill-cattle from the Eastern Ghats of Odisha — small, wiry, and extraordinarily sure-footed on steep forest paths.",
+      lifespan: "13–17 years",
+      weight: "200–290 kg (cow) · 300–420 kg (bull)",
+      height: "108–122 cm",
+      origin: "Ghumsur Hills, Gajapati, Odisha",
+      color: "Red / brown-red",
+      milkYield: "350–650 L / lactation",
+      milkFat: "4.6–5.4%",
+      milkProtein: "3.4%",
+      milkScore: 22,
+      features: [
+        "Small, wiry, very lean frame",
+        "Short, sharp upward-pointing horns",
+        "Red or reddish-brown smooth coat",
+        "Very hard, small hooves for hill paths",
+        "Exceptional disease resistance in forest conditions",
+        "Tribal community-bred; minimal human interference",
+      ],
+      uses: "Forest draft and pack animal; tribal community use",
+      conservation: "Endangered; remote Eastern Ghats provides natural protection",
+    },
+    {
+      id: "kherigarh",
+      name: "Kherigarh",
+      emoji: "🐄",
+      location: "Lakhimpur Kheri — Uttar Pradesh",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Terai-adapted cattle of UP's forest-belt district, bred in the Kheri forests for endurance in wet, humid conditions.",
+      lifespan: "13–17 years",
+      weight: "230–310 kg (cow) · 340–470 kg (bull)",
+      height: "116–130 cm",
+      origin: "Lakhimpur Kheri, Uttar Pradesh",
+      color: "White / grey",
+      milkYield: "450–800 L / lactation",
+      milkFat: "4.3–5.0%",
+      milkProtein: "3.3%",
+      milkScore: 28,
+      features: [
+        "Medium, well-proportioned frame",
+        "Short, curved horns",
+        "White or grey coat",
+        "Adapted to terai humidity and tall-grass terrain",
+        "Hard hooves; strong legs",
+        "Moderate hump and dewlap",
+      ],
+      uses: "Terai forest ploughing; light transport in UP's Kheri district",
+      conservation: "Rare; NBAGR registered; isolated to Kheri district",
+    },
+    {
+      id: "malvi",
+      name: "Malvi",
+      emoji: "🐄",
+      location: "Ujjain, Mandsaur, Ratlam — Madhya Pradesh",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Strong Malwa plateau cattle well-adapted to the semi-arid black soils — known for sustained slow draft endurance.",
+      lifespan: "14–18 years",
+      weight: "270–360 kg (cow) · 410–560 kg (bull)",
+      height: "124–140 cm",
+      origin: "Malwa region, Ujjain, Madhya Pradesh",
+      color: "Grey / white-grey",
+      milkYield: "600–1000 L / lactation",
+      milkFat: "4.2–5.0%",
+      milkProtein: "3.3%",
+      milkScore: 38,
+      features: [
+        "Medium-large, well-muscled body",
+        "Short, outward-curving horns",
+        "Grey to white coat",
+        "Broad back and chest for sustained draft",
+        "Moderate hump; strong dewlap",
+        "Heat-tolerant; minimal water requirement",
+      ],
+      uses: "Soybean and wheat ploughing in Malwa; bullock cart",
+      conservation: "Stable; NBAGR registered; Malwa region breeding centres",
+    },
+    {
+      id: "motu",
+      name: "Motu",
+      emoji: "🐄",
+      location: "Malkangiri, Koraput — Odisha",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "A small, extremely heat-resistant tribal breed from the forested margins of Odisha and Andhra Pradesh.",
+      lifespan: "13–16 years",
+      weight: "200–280 kg (cow) · 300–420 kg (bull)",
+      height: "108–120 cm",
+      origin: "Motu region, Malkangiri, Odisha",
+      color: "Red / dark brown",
+      milkYield: "300–550 L / lactation",
+      milkFat: "4.7–5.4%",
+      milkProtein: "3.4%",
+      milkScore: 20,
+      features: [
+        "Small, stocky and robust frame",
+        "Short, stout upward-curving horns",
+        "Red-brown smooth coat",
+        "Exceptional heat and humidity tolerance",
+        "Minimal feed requirement — thrives on sparse forage",
+        "Close-bonded with tribal communities",
+      ],
+      uses: "Tribal agricultural draft; pack animal in forest terrain",
+      conservation: "Endangered; Odisha tribal belt habitat; NBAGR listed",
+    },
+    {
+      id: "nagori",
+      name: "Nagori",
+      emoji: "🐄",
+      location: "Nagaur district — Rajasthan",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Celebrated Marwari draft cattle — famous for their speed, elegance and starring role in Nagaur's legendary cattle fair.",
+      lifespan: "14–18 years",
+      weight: "280–380 kg (cow) · 430–620 kg (bull)",
+      height: "130–148 cm",
+      origin: "Nagaur district, Rajasthan",
+      color: "White / light grey",
+      milkYield: "500–900 L / lactation",
+      milkFat: "4.2–5.0%",
+      milkProtein: "3.3%",
+      milkScore: 32,
+      features: [
+        "Tall, lean, elegant body — prized for appearance",
+        "Long, sharp, outward-sweeping horns",
+        "White or pale grey fine coat",
+        "Small, firm hump; long neck",
+        "Energetic, spirited gait",
+        "Widely traded at Nagaur Cattle Fair (Asia's largest)",
+      ],
+      uses: "Fast bullock cart racing; desert draft; Nagaur fair trade",
+      conservation: "Stable; Nagaur fair ecosystem supports active breeding",
+    },
+    {
+      id: "ponwar",
+      name: "Ponwar",
+      emoji: "🐄",
+      location: "Pilibhit, Shahjahanpur — Uttar Pradesh",
+      type: "draft",
+      typeLabel: "Draft Breed",
+      blurb: "Terai-edge cattle from the Rohilkhand region — medium draft animals adapted to the damp Himalayan foothills tract.",
+      lifespan: "13–16 years",
+      weight: "220–310 kg (cow) · 330–460 kg (bull)",
+      height: "114–126 cm",
+      origin: "Ponwar region, Pilibhit, Uttar Pradesh",
+      color: "White / light grey",
+      milkYield: "400–700 L / lactation",
+      milkFat: "4.3–5.0%",
+      milkProtein: "3.3%",
+      milkScore: 26,
+      features: [
+        "Medium, compact frame",
+        "Short, outward-pointing horns",
+        "White or light grey coat",
+        "Adapted to seasonal flooding in terai",
+        "Moderate hump; strong legs",
+        "Docile temperament",
+      ],
+      uses: "Paddy and sugarcane ploughing in Rohilkhand",
+      conservation: "Rare; NBAGR registered; Pilibhit district native range",
+    },
+    {
+      id: "siri",
+      name: "Siri",
+      emoji: "🐄",
+      location: "Darjeeling, Kalimpong, Sikkim — West Bengal / Sikkim",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "A mountain cattle from the Eastern Himalayas, possibly with Tibetan Yak ancestry — producing rich milk in cold altitudes.",
+      lifespan: "12–16 years",
+      weight: "180–280 kg (cow) · 270–390 kg (bull)",
+      height: "106–122 cm",
+      origin: "Siri, Darjeeling hills, West Bengal",
+      color: "Black / dark brown with white patches",
+      milkYield: "400–800 L / lactation",
+      milkFat: "5.0–6.5%",
+      milkProtein: "3.8%",
+      milkScore: 30,
+      features: [
+        "Small to medium body with thick, shaggy coat",
+        "Short, stout horns",
+        "Black or dark brown coat with occasional white markings",
+        "Dense undercoat for Himalayan cold",
+        "Strong, compact legs for steep terrain",
+        "Gentle; suited to small hill farms",
+      ],
+      uses: "Mountain dairy; light draft; milk for butter and cheese in hills",
+      conservation: "Stable in Darjeeling/Sikkim; NBAGR registered",
+    },
+    {
+      id: "thutho",
+      name: "Thutho",
+      emoji: "🐄",
+      location: "Nagaland — Northeast India",
+      type: "dual",
+      typeLabel: "Dual Purpose",
+      blurb: "A rare indigenous cattle of Nagaland's tribal communities, adapted to the rugged, forested hills of Northeast India.",
+      lifespan: "12–15 years",
+      weight: "160–240 kg (cow) · 240–360 kg (bull)",
+      height: "100–118 cm",
+      origin: "Nagaland, Northeast India",
+      color: "Black / dark brown",
+      milkYield: "300–600 L / lactation",
+      milkFat: "5.0–6.5%",
+      milkProtein: "3.8%",
+      milkScore: 22,
+      features: [
+        "Small, compact body with dark shaggy coat",
+        "Short, curved horns",
+        "Black or dark brown coat",
+        "Adapted to northeast monsoon and hill terrain",
+        "High disease resistance in dense forest conditions",
+        "Integral to Naga tribal cultural identity",
+      ],
+      uses: "Tribal dairy, ceremonial use; light draft in forested hills",
+      conservation: "Endangered; tribal habitat provides some protection; NBAGR listed",
+    },
+  ];
+
+  // ── Render breed cards ──────────────────────────────────────────
+  function renderCards(list) {
+    const grid = document.getElementById('breedGrid');
+    grid.innerHTML = '';
+
+    if (list.length === 0) {
+      grid.innerHTML = '<div class="no-results">🔍 No breeds found. Try a different search.</div>';
+      return;
+    }
+
+    list.forEach((b, i) => {
+      const card = document.createElement('div');
+      card.className = 'breed-card';
+      card.dataset.type = b.type;
+      card.style.animationDelay = (i * 0.05) + 's';
+      card.innerHTML = `
+        <div class="breed-emoji">${b.emoji}</div>
+        <div class="breed-name">${b.name}</div>
+        <div class="breed-location">📍 ${b.location.split(',').slice(-1)[0].trim()}</div>
+        <div class="breed-type-tag">${b.typeLabel}</div>
+        <div class="breed-blurb">${b.blurb}</div>
+        <div class="card-arrow">↗</div>
+      `;
+      card.addEventListener('click', () => openModal(b));
+      grid.appendChild(card);
+    });
+  }
+
+  // ── Open modal with breed data ──────────────────────────────────
+  function openModal(b) {
+    document.getElementById('modalEmoji').textContent = b.emoji;
+    document.getElementById('modalBreedName').textContent = b.name;
+    document.getElementById('modalSubtitle').textContent = b.location + ' · ' + b.typeLabel;
+
+    document.getElementById('modalBody').innerHTML = `
+      <!-- Quick stats -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="s-icon">⏳</div>
+          <div class="s-val">${b.lifespan}</div>
+          <div class="s-lbl">Avg Lifespan</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">⚖️</div>
+          <div class="s-val">${b.weight.split('·')[0].trim()}</div>
+          <div class="s-lbl">Cow Weight</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">📏</div>
+          <div class="s-val">${b.height}</div>
+          <div class="s-lbl">Height at Withers</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">📍</div>
+          <div class="s-val" style="font-size:.78rem;">${b.origin.split(',')[0]}</div>
+          <div class="s-lbl">Origin</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">🎨</div>
+          <div class="s-val" style="font-size:.78rem;">${b.color}</div>
+          <div class="s-lbl">Coat Color</div>
+        </div>
+        <div class="stat-box">
+          <div class="s-icon">🥛</div>
+          <div class="s-val" style="font-size:.8rem;">${b.milkYield}</div>
+          <div class="s-lbl">Milk / Lactation</div>
+        </div>
+      </div>
+
+      <!-- Milk nutrients -->
+      <div class="info-block">
+        <h4>🥛 Milk Nutritional Profile</h4>
+        <p style="margin-bottom:12px;">Fat content: <strong style="color:#00e5a0;">${b.milkFat}</strong> &nbsp;|&nbsp; Protein: <strong style="color:#00e5a0;">${b.milkProtein}</strong> &nbsp;|&nbsp; Type: <strong style="color:#00e5a0;">A2 Beta-Casein milk</strong></p>
+        <div class="milk-bar-wrap">
+          <span style="font-size:.78rem;color:#7fa99a;min-width:80px;">Yield Score</span>
+          <div class="milk-bar-bg">
+            <div class="milk-bar-fill" id="milkBar" style="width:0%"></div>
+          </div>
+          <span class="milk-bar-label">${b.milkScore}/100</span>
+        </div>
+      </div>
+
+      <!-- Body features -->
+      <div class="info-block">
+        <h4>🐄 Distinctive Body Features</h4>
+        <ul>
+          ${b.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+      </div>
+
+      <!-- Uses & conservation -->
+      <div class="info-block">
+        <h4>🌾 Primary Uses</h4>
+        <p>${b.uses}</p>
+      </div>
+      <div class="info-block">
+        <h4>🛡️ Conservation Status</h4>
+        <p>${b.conservation}</p>
+      </div>
+    `;
+
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Animate milk bar after modal opens
+    setTimeout(() => {
+      const bar = document.getElementById('milkBar');
+      if (bar) bar.style.width = b.milkScore + '%';
+    }, 350);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on overlay click or button
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // ── Filter + Search ─────────────────────────────────────────────
+  let activeFilter = 'all';
+  let searchTerm   = '';
+
+  function applyFilters() {
+    const filtered = BREEDS.filter(b => {
+      const matchType   = activeFilter === 'all' || b.type === activeFilter;
+      const matchSearch = b.name.toLowerCase().includes(searchTerm) ||
+                          b.location.toLowerCase().includes(searchTerm) ||
+                          b.blurb.toLowerCase().includes(searchTerm);
+      return matchType && matchSearch;
+    });
+    renderCards(filtered);
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  document.getElementById('breedSearch').addEventListener('input', (e) => {
+    searchTerm = e.target.value.toLowerCase().trim();
+    applyFilters();
+  });
+
+  // ── Initial render ───────────────────────────────────────────────
+  renderCards(BREEDS);
+  </script>
+</body>
 </html>
