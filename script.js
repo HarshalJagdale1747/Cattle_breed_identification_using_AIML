@@ -5,7 +5,7 @@
 */
 const breeds = ["Gir", "Sahiwal", "Red Sindhi", "Tharparkar", "Ongole", "Kankrej"];
 
-// This function is used by the back button on all pages.
+// This function is used by the back button on all pages
 function goBackHome() {
     window.location.href = "/";
 }
